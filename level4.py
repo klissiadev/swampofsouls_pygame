@@ -12,7 +12,7 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
 # Screen dimensions
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 1320, 680
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Fase - 04")
 
@@ -26,7 +26,7 @@ crossed_planks = 0
 errors = 0
 max_errors = 5
 start_time = time.time()
-time_limit = 30
+time_limit = 10
 bridge_stability = 100  # The percentage of stability of the bridge
 error_time = None  # Time when an error occurs
 error_color_duration = 2  # Duration in seconds to show the red color
@@ -40,23 +40,23 @@ def create_letter_row():
 letter_row = create_letter_row()
 
 # Positions of the planks
-plank_positions = [(50 + i * 100, HEIGHT // 2 + 100) for i in range(total_planks)]
+plank_positions = [(200 + i * 100, HEIGHT // 2 + 200) for i in range(total_planks)]
 
 # Player's starting position
 player_position = [plank_positions[0][0], plank_positions[0][1] - 40]  # Starts on the first plank
 
 # Function to draw the state of the bridge
-def draw_bridge(offset_x):
+def draw_bridge(offset_x, stability_y):
     # Draw all bridge planks based on displacement
     for i in range(total_planks):
-        pygame.draw.rect(screen, GREEN, [plank_positions[i][0] + offset_x, plank_positions[i][1], 20, 10])
+        pygame.draw.rect(screen, GREEN, [plank_positions[i][0] + offset_x, plank_positions[i][1] + stability_y, 40, 10])
 
 # Function to draw the player state
-def draw_game_state(offset_x):
+def draw_game_state(offset_x, stability_y):
     global bridge_stability, error_time
 
     # Draw the player
-    pygame.draw.circle(screen, BLUE, (player_position[0] + offset_x, player_position[1]), 15)
+    pygame.draw.circle(screen, BLUE, (player_position[0] + offset_x + 20, player_position[1] + stability_y), 15)
 
     # Draw row of letters (next letter in center)
     center_x = WIDTH // 2
@@ -86,13 +86,14 @@ def game_loop():
     global letter_row, crossed_planks, errors, start_time, bridge_stability, player_position, error_time
     running = True
     offset_x = 0  # Screen scroll control
+    stability_y = 0
 
     while running:
         screen.fill(BLACK)
 
         # Draw bridge and game state with offset
-        draw_bridge(offset_x)
-        draw_game_state(offset_x)
+        draw_bridge(offset_x, stability_y)
+        draw_game_state(offset_x, stability_y)
 
         # Check events
         for event in pygame.event.get():
@@ -119,12 +120,14 @@ def game_loop():
                     # Incorrect letter, bridge gives a little
                     errors += 1
                     bridge_stability -= 20  # The bridge gives 20% for each error
+                    stability_y += 30
                     error_time = time.time()  # Record the time of the error
 
         # Check the time
         elapsed_time = time.time() - start_time
         if elapsed_time > time_limit:
             bridge_stability -= 10  # Player delay
+            stability_y += 10
             start_time = time.time()
 
         # Check fault conditions
@@ -135,6 +138,7 @@ def game_loop():
             letter_row = create_letter_row()
             player_position = [plank_positions[0][0], plank_positions[0][1] - 40]
             offset_x = 0
+            stability_y = 0
             start_time = time.time()
 
         # Check if the player crossed all the boards
