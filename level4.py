@@ -25,11 +25,19 @@ total_planks = 45
 crossed_planks = 0
 errors = 0
 max_errors = 5
-LETTER_QUEUE = ['m','v','v','m','m','v','c',',',',','c','c',' ','x','x','.','.','x','.',' ',';',';','z','z',' ','b','n','b','b','n','n','m','c','v',' ','.',';','x','z',' ','b','z',' ',',','n','v']  # Fila de letras pré-definida
-letter_queue = LETTER_QUEUE
 start_time = time.time()
 time_limit = 30
 bridge_stability = 100  # The percentage of stability of the bridge
+error_time = None  # Time when an error occurs
+error_color_duration = 2  # Duration in seconds to show the red color
+
+def create_letter_row():
+    letter_row = []
+    with open('level04\LetterRow.txt', 'r') as file:
+        letter_row = [line.rstrip('\n').replace("'", "") for line in file]
+    return letter_row
+
+letter_row = create_letter_row()
 
 # Positions of the planks
 plank_positions = [(50 + i * 100, HEIGHT // 2 + 100) for i in range(total_planks)]
@@ -45,15 +53,19 @@ def draw_bridge(offset_x):
 
 # Function to draw the player state
 def draw_game_state(offset_x):
-    global bridge_stability
+    global bridge_stability, error_time
 
     # Draw the player
     pygame.draw.circle(screen, BLUE, (player_position[0] + offset_x, player_position[1]), 15)
 
     # Draw row of letters (next letter in center)
     center_x = WIDTH // 2
-    for i, letter in enumerate(letter_queue):
-        letter_surface = font.render(letter, True, WHITE)
+    for i, letter in enumerate(letter_row):
+        if i == 0 and error_time and time.time() - error_time < error_color_duration:
+            letter_color = RED
+        else:
+            letter_color = WHITE
+        letter_surface = font.render(letter, True, letter_color)
         x_position = center_x + (i * 100)
         screen.blit(letter_surface, (x_position, HEIGHT // 2 - 50))
 
@@ -71,7 +83,7 @@ def draw_game_state(offset_x):
 
 # Game loop
 def game_loop():
-    global letter_queue, crossed_planks, errors, start_time, bridge_stability, player_position
+    global letter_row, crossed_planks, errors, start_time, bridge_stability, player_position, error_time
     running = True
     offset_x = 0  # Screen scroll control
 
@@ -88,10 +100,10 @@ def game_loop():
                 running = False
             elif event.type == pygame.KEYDOWN:
                 # Check if the key pressed
-                if event.unicode.upper() == letter_queue[0].upper():
+                if event.unicode.upper() == letter_row[0].upper():
                     # Correct letter, advance on the bridge
                     crossed_planks += 1
-                    letter_queue.pop(0)  # Remove the first letter
+                    letter_row.pop(0)  # Remove the first letter
                     start_time = time.time()
 
                     # Move the player to the next plank
@@ -107,6 +119,7 @@ def game_loop():
                     # Incorrect letter, bridge gives a little
                     errors += 1
                     bridge_stability -= 20  # The bridge gives 20% for each error
+                    error_time = time.time()  # Record the time of the error
 
         # Check the time
         elapsed_time = time.time() - start_time
@@ -119,7 +132,7 @@ def game_loop():
             crossed_planks = 0
             errors = 0
             bridge_stability = 100
-            letter_queue = LETTER_QUEUE
+            letter_row = create_letter_row()
             player_position = [plank_positions[0][0], plank_positions[0][1] - 40]
             offset_x = 0
             start_time = time.time()
