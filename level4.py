@@ -7,22 +7,29 @@ pygame.init()
 # Defining colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+BROWN = (139, 69, 19)
 RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
 
 # Screen dimensions
 WIDTH, HEIGHT = 1320, 680
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Fase - 04")
+pygame.display.set_caption("Level - 04")
 
 #Screen background
 background_image = pygame.image.load('./level04/background-sky.png')
 background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
 
 # Defining fonts
-font = pygame.font.Font(None, 74)
-small_font = pygame.font.Font(None, 36)
+font = pygame.font.Font(None, 100)
+normal_font = pygame.font.Font("./level04/IMFellEnglish-Regular.ttf", 36)
+small_font = pygame.font.Font("./level04/IMFellEnglish-Regular.ttf", 30)
+
+# players sounds
+background_sound = pygame.mixer.Sound('./level04/witch-forest-atmo-24654.mp3')
+bridge_stability_sound = pygame.mixer.Sound('./level04/wood-creaking.mp3')
+click_sound = pygame.mixer.Sound('./level04/click-keyboard.mp3')
+background_sound.set_volume(0.5)  # Define o volume para 50%
+background_sound.play()
 
 # Defining game variables
 total_planks = 45
@@ -30,7 +37,7 @@ crossed_planks = 0
 errors = 0
 max_errors = 5
 start_time = time.time()
-time_limit = 10
+time_limit = 8
 bridge_stability = 100  # The percentage of stability of the bridge
 error_time = None  # Time when an error occurs
 error_color_duration = 2  # Duration in seconds to show the red color
@@ -43,10 +50,10 @@ def create_letter_row():
 letter_row = create_letter_row()
 
 # Positions of the planks
-plank_positions = [( i * 69, HEIGHT // 2 + 200) for i in range(total_planks)]
+plank_positions = [( 20 + i * 69, HEIGHT // 2 + 200) for i in range(total_planks)]
 
 # Player's starting position
-player_position = [plank_positions[0][0] - 75, plank_positions[0][1] - 200]  # Starts on the first plank
+player_position = [plank_positions[0][0], plank_positions[0][1] - 200]  # Starts on the first plank
 
 # Function to draw the state of the bridge
 def draw_bridge(offset_x, stability_y):
@@ -54,6 +61,53 @@ def draw_bridge(offset_x, stability_y):
     for i in range(total_planks):
         image = pygame.transform.scale(pygame.image.load('./level04/plank.png').convert_alpha(), (75, 123))
         screen.blit(image, (plank_positions[i][0] + offset_x, plank_positions[i][1] + stability_y))
+    floor = pygame.transform.scale(pygame.image.load('./level04/floor.png').convert_alpha(), (320, 250))
+    screen.blit(floor, (plank_positions[total_planks -1][0] + offset_x + 75, plank_positions[total_planks-1][1]))
+
+
+# Function to jump animation
+def player_jump(target_x, target_y, offset_x, stability_y):
+    jump_peak = -100  # Altura máxima do pulo (negativo para subir)
+    jump_duration = 10  # Duração total do pulo (número de frames)
+
+    start_x, start_y = player_position[0] , player_position[1]
+
+    # Se o jogador está próximo do final da tela, altera o comportamento
+    if player_position[0] > WIDTH - 175:
+        for i in range(jump_duration):
+            # Progresso do pulo de 0 a 1
+            t = i / jump_duration
+            # Movimento vertical parabólico: o y diminui para o jogador subir
+            parabola = 4 * jump_peak * t * (1 - t)
+            player_position[1] = start_y + (target_y - start_y) * t + parabola
+
+            # Desenha o estado atual do jogo para cada frame do pulo
+            screen.fill(BLACK)
+            screen.blit(background_image, (0, 0))
+            draw_bridge(offset_x, stability_y)
+            draw_game_state(offset_x, stability_y)
+            pygame.display.flip()
+            pygame.time.delay(20)
+    else:
+        # Movimento de pulo normal
+        for i in range(jump_duration):
+            # Progresso do pulo de 0 a 1
+            t = i / jump_duration
+
+            # Movimento horizontal linear: interpolação de posição x
+            player_position[0] = start_x + (target_x - start_x) * t
+
+            # Movimento vertical parabólico: o y diminui para o jogador subir
+            parabola = 4 * jump_peak * t * (1 - t)
+            player_position[1] = start_y + (target_y - start_y) * t + parabola
+
+            # Desenha o estado atual do jogo para cada frame do pulo
+            screen.fill(BLACK)
+            screen.blit(background_image, (0, 0))
+            draw_bridge(offset_x, stability_y)
+            draw_game_state(offset_x, stability_y)
+            pygame.display.flip()
+            pygame.time.delay(20)
 
 
 # Function to draw the player state
@@ -62,7 +116,11 @@ def draw_game_state(offset_x, stability_y):
 
     # Draw the player
     player = pygame.transform.scale(pygame.image.load('./level04/ALMA_WALKING1.png').convert_alpha(), (112, 200))
-    screen.blit(player, (player_position[0] + offset_x + 35, player_position[1] + stability_y + 37))
+    screen.blit(player, (player_position[0] + offset_x - 37, player_position[1] + stability_y + 45))
+
+    # Draw level
+    level_text = normal_font.render(f'Level 1', True, WHITE)
+    screen.blit(level_text, (WIDTH//2 - 50, 20))
 
     # Draw row of letters (next letter in center)
     center_x = WIDTH // 2
@@ -80,7 +138,7 @@ def draw_game_state(offset_x, stability_y):
     screen.blit(plank_text, (50, 50))
 
     # Draw errors
-    error_text = small_font.render(f'Errors: {errors}/{max_errors}', True, RED)
+    error_text = small_font.render(f'Errors: {errors}/{max_errors}', True, BROWN)
     screen.blit(error_text, (50, 100))
 
     # Design plank stability
@@ -107,28 +165,27 @@ def game_loop():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN:
+                click_sound.play()
                 # Check if the key pressed
                 if event.unicode.upper() == letter_row[0].upper():
                     # Correct letter, advance on the bridge
                     crossed_planks += 1
                     letter_row.pop(0)  # Remove the first letter
                     start_time = time.time()
-
                     # Move the player to the next plank
                     if crossed_planks < total_planks:
-                        player_position[0] = plank_positions[crossed_planks][0]
-                        player_position[1] = plank_positions[crossed_planks][1] - 200
+                        player_jump(plank_positions[crossed_planks][0] + 12, plank_positions[crossed_planks][1] - 200 + 45, offset_x, stability_y)
 
                     # Move the bridge
-                    if player_position[0] > WIDTH - 300:
-                        offset_x = WIDTH - 300 - player_position[0]
-
+                    if player_position[0] > WIDTH - 175:
+                        offset_x = WIDTH - 175 - player_position[0]
                 else:
                     # Incorrect letter, bridge gives a little
                     errors += 1
                     bridge_stability -= 20  # The bridge gives 20% for each error
                     stability_y += 30
                     error_time = time.time()  # Record the time of the error
+                    bridge_stability_sound.play()
 
         # Check the time
         elapsed_time = time.time() - start_time
@@ -136,6 +193,7 @@ def game_loop():
             bridge_stability -= 10  # Player delay
             stability_y += 10
             start_time = time.time()
+            bridge_stability_sound.play()
 
         # Check fault conditions
         if bridge_stability <= 0 or errors >= max_errors:
@@ -149,8 +207,12 @@ def game_loop():
             start_time = time.time()
 
         # Check if the player crossed all the boards
-        if crossed_planks == total_planks:
-            running = False
+        if crossed_planks >= total_planks:
+            # Move the player to the floor
+            player_position[0] += 5  # Keep moving right
+
+            if player_position[0] > WIDTH:  # If the player has already left the screen
+                running = False  # End the game
 
         pygame.display.flip()
         pygame.time.delay(100)
