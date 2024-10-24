@@ -3,8 +3,6 @@ import time
 import math
 import player as player_mod
 
-from level2 import clock
-
 # Initializing Pygame
 pygame.init()
 
@@ -12,7 +10,7 @@ pygame.init()
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BROWN = (139, 69, 19)
-RED = (255, 0, 0)
+RED = (100, 0, 0)
 
 # Screen dimensions
 WIDTH, HEIGHT = 1320, 680
@@ -53,7 +51,7 @@ error_color_duration = 2  # Duration in seconds to show the red color
 
 # Player animations
 moving_sprites = pygame.sprite.Group()
-player = player_mod.Player(WIDTH/2 - 65, 370)
+player = player_mod.Player(WIDTH/2 - 65, 370, "Right")
 moving_sprites.add(player)
 
 def create_letter_row():

@@ -18,7 +18,7 @@ WHITE = (255, 255, 255)
 # Screen dimensions
 WIDTH, HEIGHT = 1320, 680
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Fase - 02")
+pygame.display.set_caption("Interval - 02")
 
 scroll = 0
 
@@ -31,9 +31,9 @@ for i in range(2, 6):
 bg_width = bg_images[0].get_width()
 
 moving_sprites = pygame.sprite.Group()
-player = player_mod.Player(WIDTH/2 - 65, 370, "Right")
+player = player_mod.Player(40, 370, "Right")
 moving_sprites.add(player)
-
+player_position = [40,370]
 
 def drawBackground():
     static_bg_image = pygame.image.load(f'./level02/background/BG_1.png').convert_alpha()
@@ -63,6 +63,7 @@ def game_loop():
         clock.tick(FPS)
 
         drawBackground()
+        screen.blit(player.image, (player_position[0], player_position[1]))
 
         # Check events
         for event in pygame.event.get():
@@ -70,8 +71,20 @@ def game_loop():
                 running = False
 
         keys = pygame.key.get_pressed()
-        if any(keys):
-            scroll += 5
+        if keys[pygame.K_RIGHT]:
+            player.orientation = 'Right'
+            if player_position[0] < WIDTH - 300:
+                player_position[0] += 4
+            else:
+                scroll += 2
+            player.animate()
+        elif keys[pygame.K_LEFT]:
+            player.orientation = "Left"
+
+            if player_position[0] > 40:
+                player_position[0] -= 4
+                if scroll > 0:
+                    scroll -= 2
             player.animate()
         else:
             player.stopAnimating()
@@ -81,9 +94,7 @@ def game_loop():
         elif abs(scroll) < 0:
             scroll = bg_width
 
-        moving_sprites.draw(screen)
         moving_sprites.update(0.25)
-
         pygame.display.update()
 
     pygame.quit()
