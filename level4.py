@@ -16,6 +16,10 @@ WIDTH, HEIGHT = 1320, 680
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Fase - 04")
 
+#Screen background
+background_image = pygame.image.load('./level04/background-sky.png')
+background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
+
 # Defining fonts
 font = pygame.font.Font(None, 74)
 small_font = pygame.font.Font(None, 36)
@@ -32,7 +36,6 @@ error_time = None  # Time when an error occurs
 error_color_duration = 2  # Duration in seconds to show the red color
 
 def create_letter_row():
-    letter_row = []
     with open('level04\LetterRow.txt', 'r') as file:
         letter_row = [line.rstrip('\n').replace("'", "") for line in file]
     return letter_row
@@ -40,23 +43,26 @@ def create_letter_row():
 letter_row = create_letter_row()
 
 # Positions of the planks
-plank_positions = [(200 + i * 100, HEIGHT // 2 + 200) for i in range(total_planks)]
+plank_positions = [( i * 69, HEIGHT // 2 + 200) for i in range(total_planks)]
 
 # Player's starting position
-player_position = [plank_positions[0][0], plank_positions[0][1] - 40]  # Starts on the first plank
+player_position = [plank_positions[0][0] - 75, plank_positions[0][1] - 200]  # Starts on the first plank
 
 # Function to draw the state of the bridge
 def draw_bridge(offset_x, stability_y):
     # Draw all bridge planks based on displacement
     for i in range(total_planks):
-        pygame.draw.rect(screen, GREEN, [plank_positions[i][0] + offset_x, plank_positions[i][1] + stability_y, 40, 10])
+        image = pygame.transform.scale(pygame.image.load('./level04/plank.png').convert_alpha(), (75, 123))
+        screen.blit(image, (plank_positions[i][0] + offset_x, plank_positions[i][1] + stability_y))
+
 
 # Function to draw the player state
 def draw_game_state(offset_x, stability_y):
     global bridge_stability, error_time
 
     # Draw the player
-    pygame.draw.circle(screen, BLUE, (player_position[0] + offset_x + 20, player_position[1] + stability_y), 15)
+    player = pygame.transform.scale(pygame.image.load('./level04/ALMA_WALKING1.png').convert_alpha(), (112, 200))
+    screen.blit(player, (player_position[0] + offset_x + 35, player_position[1] + stability_y + 37))
 
     # Draw row of letters (next letter in center)
     center_x = WIDTH // 2
@@ -90,6 +96,7 @@ def game_loop():
 
     while running:
         screen.fill(BLACK)
+        screen.blit(background_image, (0, 0))
 
         # Draw bridge and game state with offset
         draw_bridge(offset_x, stability_y)
@@ -110,11 +117,11 @@ def game_loop():
                     # Move the player to the next plank
                     if crossed_planks < total_planks:
                         player_position[0] = plank_positions[crossed_planks][0]
-                        player_position[1] = plank_positions[crossed_planks][1] - 40
+                        player_position[1] = plank_positions[crossed_planks][1] - 200
 
                     # Move the bridge
-                    if player_position[0] > WIDTH // 2:
-                        offset_x = WIDTH // 2 - player_position[0]
+                    if player_position[0] > WIDTH - 300:
+                        offset_x = WIDTH - 300 - player_position[0]
 
                 else:
                     # Incorrect letter, bridge gives a little
@@ -136,7 +143,7 @@ def game_loop():
             errors = 0
             bridge_stability = 100
             letter_row = create_letter_row()
-            player_position = [plank_positions[0][0], plank_positions[0][1] - 40]
+            player_position = [plank_positions[0][0] - 60, plank_positions[0][1] - 200]
             offset_x = 0
             stability_y = 0
             start_time = time.time()
