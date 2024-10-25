@@ -45,8 +45,6 @@ class Player(pygame.sprite.Sprite):
             if self.current_sprite >= len(self.sprites):
                 self.current_sprite = 0
                 self.isAnimating = False
+        else:
+            self.stopAnimating()
         self.flip_sprites()
-
-
-
-
