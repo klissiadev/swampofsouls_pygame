@@ -54,6 +54,9 @@ moving_sprites = pygame.sprite.Group()
 player = player_mod.Player(WIDTH/2 - 65, 370, "Right")
 moving_sprites.add(player)
 
+# Drawn moon
+moon = pygame.transform.scale(pygame.image.load('./assets/objects/moon.png').convert_alpha(), (102, 100))
+
 def create_letter_row():
     with open('level04\LetterRow.txt', 'r') as file:
         letter_row = [line.rstrip('\n').replace("'", "") for line in file]
@@ -141,6 +144,9 @@ def draw_game_state(offset_x, stability_y):
     # Draw the player
     player_img = pygame.transform.scale(player.image, (112, 200))
     screen.blit(player_img, (player_position[0] + offset_x - 37, player_position[1] + stability_y + 45))
+
+    # Draw moon
+    screen.blit(moon, (605, 53))
 
     # Draw level
     level_text = normal_font.render(f'Level 4', True, WHITE)

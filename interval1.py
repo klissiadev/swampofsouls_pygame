@@ -35,6 +35,12 @@ for i in range(2, 6):
 
 bg_width = bg_images[0].get_width()
 
+# players sounds
+background_sound = pygame.mixer.Sound('./assets/sounds-effects/Alone at Twilight 5.wav')
+click_sound = pygame.mixer.Sound('./level04/click-keyboard.mp3')
+background_sound.set_volume(0.5)  # Define o volume para 50%
+background_sound.play()
+
 # Player
 moving_sprites = pygame.sprite.Group()
 player = player_mod.Player(40, 370, "Right")
