@@ -21,7 +21,7 @@ background_sound.play()
 #blocks
 block_image = pygame.image.load('level03/Group 29 (1).png').convert_alpha()
 block_rect = block_image.get_rect(topleft=(250, 600))
-block_sound = pygame.mixer.Sound('level03/walk-in-dry-leaves-in-the-forest-22431.mp3')
+block_sound = pygame.mixer.Sound('level03/walk-in-dry-leaves-in-the-forest-22431_JTzeMuNJ.mp3')
 block_sound.set_volume(0.2)
 
 scroll = 0
