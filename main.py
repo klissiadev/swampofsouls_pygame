@@ -2,6 +2,7 @@ import pygame
 from classes.menu_class import SwampOfSoulsScreen
 from classes.interval_1_class import IntervalScreen
 from classes.level_2_class import LevelTwoScreen
+from level1 import LevelOneScreen
 
 # Inicializar o pygame
 pygame.init()
@@ -20,6 +21,9 @@ def main():
     # Após o menu, inicializa o jogo
     game_screen = IntervalScreen()  # Inicializa o jogo
     game_screen.run()  # Executa o jogo
+
+    level_screen = LevelOneScreen()
+    level_screen.run()
 
     level_screen = LevelTwoScreen()
     level_screen.run()
