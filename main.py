@@ -1,8 +1,11 @@
 import pygame
 from classes.menu_class import SwampOfSoulsScreen
 from classes.interval_1_class import IntervalScreen
+from classes.interval_2_class import Interval2Screen
+from classes.interval_3_class import Interval3Screen
 from classes.level_2_class import LevelTwoScreen
 from level1 import LevelOneScreen
+from level3 import LevelThreeOnScreen
 
 # Inicializar o pygame
 pygame.init()
@@ -25,7 +28,16 @@ def main():
     level_screen = LevelOneScreen()
     level_screen.run()
 
-    level_screen = LevelTwoScreen()
+    # game_screen = Interval2Screen()
+    # game_screen.run()
+    #
+    # level_screen = LevelTwoScreen()
+    # level_screen.run()
+
+    game_screen = Interval3Screen()
+    game_screen.run()
+
+    level_screen = LevelThreeOnScreen()
     level_screen.run()
 
 if __name__ == '__main__':

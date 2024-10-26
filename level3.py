@@ -2,6 +2,8 @@ import pygame
 import random
 import time
 import player as player_mod
+from classes.level_3_class import Block
+from classes.level_3_class import Camera
 
 pygame.init()
 
@@ -34,194 +36,149 @@ WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 margin = 200
 
+class LevelThreeOnScreen:
+    def __init__(self):
+        self.scroll = 0
+        self.moving_sprites = pygame.sprite.Group()
+        self.player = player_mod.Player(40, 370, "Right")
+        self.moving_sprites.add(self.player)
+        self.player_position = [40, 370]
+        self.bg_images = [pygame.image.load(f'./level02/background/BG_{i}.png').convert_alpha() for i in range(2, 6)]
+        self.bg_width = self.bg_images[0].get_width()
+        self.camera = Camera(width, height)
+        self.blocks = self.create_blocks(200, height // 2)
+        self.start_time = time.time()
+        self.out_of_the_way = 0
+        self.errors = 5
+        self.score = 0
+        self.cont = 0
+        self.max_blocks = 45
 
-bg_images = []
-for i in range(2, 6):
-    print(i)
-    bg_image = pygame.image.load(f'./level02/background/BG_{i}.png').convert_alpha()
-    bg_images.append(bg_image)
+    def drawBackground(self, bg_images):
+        static_bg_image = pygame.image.load(f'./level02/background/BG_1.png').convert_alpha()
+        screen.blit(static_bg_image, (0, 0))
 
-bg_width = bg_images[0].get_width()
-moving_sprites = pygame.sprite.Group()
-player = player_mod.Player(40, 370, "Right")
-moving_sprites.add(player)
-player_position = [40,370]
+        for x in range(6):
+            speed = 1
+            for l in self.bg_images:
+                screen.blit(l, ((x * self.bg_width) - self.scroll * speed, 0))
+                speed += 0.6
 
+    def create_blocks(self, margin, y):
+        blocks = []
+        block_width = 75
+        space = 100
+        x = margin
+        for i in range(5):  # Cria 5 blocos
+            letter = random.choice(['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'r', ' '])
+            block = Block(x, y, letter)
+            blocks.append(block)
+            x += block_width + space
+        return blocks
 
-def drawBackground():
-    static_bg_image = pygame.image.load(f'./level02/background/BG_1.png').convert_alpha()
-    screen.blit(static_bg_image, (0, 0))
+    def reset_game(self):
+        self.start_time = time.time()
+        self.cont = 0
+        self.out_of_the_way = 0
+        self.errors = 5
+        self.score = 0
+        self.scroll = 0
+        self.player_position = [40, 370]
+        self.blocks = self.create_blocks(200, height // 2)
+        for block in self.blocks:
+            block.is_seeing = True
+        self.player.rect.midbottom = (self.player_position[0], self.player_position[1])
+        self.player.stopAnimating()
 
-    for x in range(6):
-        speed = 1
-        for l in bg_images:
-            screen.blit(l, ((x * bg_width) - scroll * speed, 0))
-            speed += 0.6
-
-class Block:
-    def __init__(self, x, y, letter, ):
-        self.rect = pygame.Rect(x, y, 75, 75)
-        self.letter = letter
-        self.is_seeing = True
-        self.incorrect = False
-        self.image = pygame.image.load('level03/Group 29 (1).png').convert_alpha()
-        self.total_blocks = 10
-        self.blocks_positions = [(i * 69, height // 2) for i in range(self.total_blocks)]
-
-    def draw(self, camera):
-        if self.is_seeing:
-            pos = camera.apply(self.rect)
-            screen.blit(self.image, pos)
-            font = pygame.font.Font(None, 50)
-            color = (255, 255, 255)
-            if self.incorrect:
-                color = (255, 0, 0)
-            text1 = font.render(self.letter, True, (color))
-            text_rect = text1.get_rect(center=(pos.centerx + 200 , pos.top - 10))
-            screen.blit(text1, text_rect)
-
-    def reset_block(self, x, y, letter):
-        self.rect.topleft = (x, y)
-        self.letter = letter
-        self.is_seeing = True
-        self.image = pygame.image.load('level03/Group 29 (1).png').convert_alpha()
-
-
-class Camera:
-    def __init__(self, width, height):
-        self.camera = pygame.Rect(0, 0, width, height)
-        self.width = width
-        self.height = height
-
-    def apply(self, rect):
-        return rect.move(-self.camera.x, -self.camera.y)
-
-    def update(self, target):
-        x = -target.x + int(800 / 2)
-        y = -target.y + int(600 / 2)
-        x = min(0, x)
-        y = max(0, y)
-        x = max(-(self.width - 800), x)
-        y = max((self.height - 600), y)
-        self.camera = pygame.Rect(x, y, self.width, self.height)
-
-def create_blocks(margin, y):
-    blocks = []
-    block_width = 75
-    space = 100
-    x = margin
-    for i in range(5):  # Cria 5 blocos
-        letter = random.choice(['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'r', ' '])
-        block = Block(x, y, letter)
-        blocks.append(block)
-        x += block_width + space
-    return blocks
-
-def reset_game():
-    global start_time, out_of_the_way, errors, score, scroll, blocks, player_position, block_found, y
-    start_time = time.time()
-    out_of_the_way = 0
-    errors = 5
-    score = 0
-    scroll = 0
-    player_position = [40, 370]
-    block_found = False
-    y = height // 2
-    blocks = create_blocks(margin, y)
-
-    for block in blocks:
-        block.is_seeing = True
-
-    # Reset position of the player
-    player.rect.midbottom = (player_position[0], player_position[1])
-    player.stopAnimating()
-
-def game_loop():
-    global scroll, bg_width, margin, blocks, out_of_the_way, errors, score, start_time, font, text1, text_rect
-
-    camera = Camera(1320, 680)
-    running = True
-    time_limit = 8
-    reset_game()
+    def run(self):
+        running = True
+        time_limit = 8
+        self.reset_game()
 
 
-    while running:
-        block_found = False
+        while running:
+            block_found = False
 
-        clock.tick(FPS)
+            clock.tick(FPS)
 
-        drawBackground()
+            self.drawBackground(self.bg_images)
 
-        current_time = time.time()
-        elapsed_time = current_time - start_time
+            current_time = time.time()
+            elapsed_time = current_time - self.start_time
 
-        for block in blocks:
-            block.draw(camera)
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.KEYDOWN:
-                letter_is_pressed = event.unicode.lower()
+            for block in self.blocks:
+                block.draw(self.camera)
 
-                for block in blocks:
-                    if block.is_seeing and block.letter == letter_is_pressed:
-                        if block.rect.x > player_position[0] or abs(block.rect.x - player_position[0]) < 10:
-                                block.is_seeing = False
-                                player.rect.midbottom = (block.rect.centerx, block.rect.top)
-                                block_found = True
-                                scroll += 5
-                                start_time = time.time()
-                                block_sound.play()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                elif event.type == pygame.KEYDOWN:
+                    letter_is_pressed = event.unicode.lower()
 
-                                if all(not b.is_seeing for b in blocks):
-                                    y = height // 2
-                                    blocks = create_blocks(margin, y)
-                                    player_position[0] = margin - 100
-                                    player.animate()
-                                    scroll += 20
-                                else:
-                                    player.stopAnimating()
+                    for block in self.blocks:
+                        if block.is_seeing and block.letter == letter_is_pressed:
+                            if block.rect.x > self.player_position[0] or abs(block.rect.x - self.player_position[0]) < 10:
+                                    block.is_seeing = False
+                                    self.player.rect.midbottom = (block.rect.centerx, block.rect.top)
+                                    block_found = True
+                                    self.cont += 1
+                                    self.scroll += 5
+                                    self.start_time = time.time()
+                                    block_sound.play()
+
+                                    if all(not b.is_seeing for b in self.blocks):
+                                        y = height // 2
+                                        self.blocks = self.create_blocks(margin, y)
+                                        self.player_position[0] = margin - 100
+                                        self.player.animate()
+                                        self.scroll += 20
+                                    else:
+                                        self.player.stopAnimating()
+
+                                    if self.cont >= self.max_blocks:
+                                        running = False
+                                    break
+
+                    if not block_found:
+                        self.errors -= 1
+                        self.score -= 15
+                        for block in self.blocks:
+                            if block.is_seeing and block.letter != letter_is_pressed:
+                                block.incorrect = True
                                 break
 
-                if not block_found:
-                    errors -= 1
-                    score -= 15
-                    for block in blocks:
-                        if block.is_seeing and block.letter != letter_is_pressed:
-                            block.incorrect = True
-                            break
-
-        if elapsed_time > time_limit:
-            out_of_the_way += 5
-            start_time = current_time
+            if elapsed_time > time_limit:
+                self.out_of_the_way += 5
+                self.start_time = current_time
 
 
-        if abs(scroll) > bg_width:
-            scroll = 0
-        elif abs(scroll) < 0:
-            scroll = bg_width
+            if abs(self.scroll) > self.bg_width:
+                self.scroll = 0
+            elif abs(self.scroll) < 0:
+                self.scroll = self.bg_width
 
-        screen.blit(player.image, (player_position[0], player_position[1]))
+            screen.blit(self.player.image, (self.player_position[0], self.player_position[1]))
 
-        score_text = normal_font.render(f"Perdido em:  {out_of_the_way}%", True, WHITE)
-        screen.blit(score_text, (10, 10))
+            score_text = normal_font.render(f"Perdido em:  {self.out_of_the_way}%", True, WHITE)
+            screen.blit(score_text, (10, 10))
 
-        erros_text = normal_font.render(f"Erros: {errors}", True, WHITE)
-        screen.blit(erros_text, (10, 50))
+            erros_text = normal_font.render(f"Erros: {self.errors}", True, WHITE)
+            screen.blit(erros_text, (10, 50))
 
-        level_text = normal_font.render(f"Level 3", True, WHITE)
-        screen.blit(level_text, (600, 10))
+            level_text = normal_font.render(f"Level 3", True, WHITE)
+            screen.blit(level_text, (600, 10))
 
-        if (out_of_the_way >= 100 or errors <= 0):
-            reset_game()
-
-
-        moving_sprites.update(0.25)
-        pygame.display.update()
+            if (self.out_of_the_way >= 100 or self.errors <= 0):
+                self.reset_game()
 
 
+            self.moving_sprites.update(0.25)
+            pygame.display.update()
+
+
+
+if __name__ == "__main__":
+    level_three_screen = LevelThreeOnScreen()
+    level_three_screen.run()
     pygame.quit()
-
-
-game_loop()

@@ -56,7 +56,7 @@ class Interval2Screen:
 
             for x in range(6):
                 speed = 1
-                for l in self.bg_images:
+                for l in self.bg_image:
                     screen.blit(l, ((x * self.bg_width) - self.scroll * speed, 0))
                     speed += 0.6
 
@@ -120,7 +120,7 @@ class Interval2Screen:
 
 
                 # Draw the tip
-                tip_text = small_font.render(f'Where am i supposed to go...?', True, WHITE)
+                tip_text = small_font.render(f'Finally some light...', True, WHITE)
                 screen.blit(tip_text, (50, HEIGHT - 60))
                 pygame.display.update()
 
