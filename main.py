@@ -1,7 +1,7 @@
 import pygame
-from menu_class import SwampOfSoulsScreen
-from interval_1_class import IntervalScreen
-from level_2_class import LevelTwoScreen
+from classes.menu_class import SwampOfSoulsScreen
+from classes.interval_1_class import IntervalScreen
+from classes.level_2_class import LevelTwoScreen
 
 # Inicializar o pygame
 pygame.init()

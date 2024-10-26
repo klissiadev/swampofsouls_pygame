@@ -27,11 +27,11 @@ small_font = pygame.font.Font(None, 36)
 # Background and images
 bg_images = []
 for i in range(2, 6):
-    bg_image = pygame.image.load(f'../level02/background/BG_{i}.png').convert_alpha()
+    bg_image = pygame.image.load(f'level02/background/BG_{i}.png').convert_alpha()
     bg_images.append(bg_image)
 bg_width = bg_images[0].get_width()
 
-static_bg_image = pygame.image.load(f'../level02/background/BG_1.png').convert_alpha()
+static_bg_image = pygame.image.load(f'level02/background/BG_1.png').convert_alpha()
 
 # Player sprite
 moving_sprites = pygame.sprite.Group()
