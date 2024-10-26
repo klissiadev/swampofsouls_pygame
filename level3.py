@@ -1,6 +1,8 @@
 import pygame
 import random
+import time
 import player as player_mod
+
 pygame.init()
 
 # screen settings
@@ -17,14 +19,21 @@ background_sound = pygame.mixer.Sound('level03/Alone at Twilight 5.wav')
 background_sound.set_volume(0.5)
 background_sound.play()
 
-
 #blocks
 block_image = pygame.image.load('level03/Group 29 (1).png').convert_alpha()
 block_rect = block_image.get_rect(topleft=(250, 600))
 block_sound = pygame.mixer.Sound('level03/walk-in-dry-leaves-in-the-forest-22431_JTzeMuNJ.mp3')
 block_sound.set_volume(0.2)
 
+#random variables
 scroll = 0
+normal_font = pygame.font.Font('level04/IMFellEnglish-Regular.ttf', 40)
+font = pygame.font.Font(None, 50)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+BLUE = (0, 0, 255)
+margin = 200
+
 
 bg_images = []
 for i in range(2, 6):
@@ -38,6 +47,7 @@ player = player_mod.Player(40, 370, "Right")
 moving_sprites.add(player)
 player_position = [40,370]
 
+
 def drawBackground():
     static_bg_image = pygame.image.load(f'./level02/background/BG_1.png').convert_alpha()
     screen.blit(static_bg_image, (0, 0))
@@ -48,19 +58,12 @@ def drawBackground():
             screen.blit(l, ((x * bg_width) - scroll * speed, 0))
             speed += 0.6
 
-# colors
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-BLUE = (0, 0, 255)
-
-# font
-normal_font = pygame.font.Font('level04/IMFellEnglish-Regular.ttf', 40)
-
 class Block:
     def __init__(self, x, y, letter, ):
         self.rect = pygame.Rect(x, y, 75, 75)
         self.letter = letter
         self.is_seeing = True
+        self.incorrect = False
         self.image = pygame.image.load('level03/Group 29 (1).png').convert_alpha()
         self.total_blocks = 10
         self.blocks_positions = [(i * 69, height // 2) for i in range(self.total_blocks)]
@@ -70,11 +73,14 @@ class Block:
             pos = camera.apply(self.rect)
             screen.blit(self.image, pos)
             font = pygame.font.Font(None, 50)
-            text1 = font.render(self.letter, True, (255, 255, 255))
+            color = (255, 255, 255)
+            if self.incorrect:
+                color = (255, 0, 0)
+            text1 = font.render(self.letter, True, (color))
             text_rect = text1.get_rect(center=(pos.centerx + 200 , pos.top - 10))
             screen.blit(text1, text_rect)
 
-    def resetar(self, x, y, letter):
+    def reset_block(self, x, y, letter):
         self.rect.topleft = (x, y)
         self.letter = letter
         self.is_seeing = True
@@ -105,21 +111,38 @@ def create_blocks(margin, y):
     space = 100
     x = margin
     for i in range(5):  # Cria 5 blocos
-        letter = random.choice(['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'R', ' '])
+        letter = random.choice(['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'r', ' '])
         block = Block(x, y, letter)
         blocks.append(block)
         x += block_width + space
     return blocks
 
-def game_loop():
-    global scroll, bg_width
-    margin = 200
+def reset_game():
+    global start_time, out_of_the_way, errors, score, scroll, blocks, player_position, block_found, y
+    start_time = time.time()
+    out_of_the_way = 0
+    errors = 5
+    score = 0
+    scroll = 0
+    player_position = [40, 370]
+    block_found = False
     y = height // 2
     blocks = create_blocks(margin, y)
+
+    for block in blocks:
+        block.is_seeing = True
+
+    # Reset position of the player
+    player.rect.midbottom = (player_position[0], player_position[1])
+    player.stopAnimating()
+
+def game_loop():
+    global scroll, bg_width, margin, blocks, out_of_the_way, errors, score, start_time, font, text1, text_rect
+
     camera = Camera(1320, 680)
     running = True
-    score = 100
-    errors = 5
+    time_limit = 8
+    reset_game()
 
 
     while running:
@@ -129,6 +152,9 @@ def game_loop():
 
         drawBackground()
 
+        current_time = time.time()
+        elapsed_time = current_time - start_time
+
         for block in blocks:
             block.draw(camera)
 
@@ -136,7 +162,7 @@ def game_loop():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN:
-                letter_is_pressed = event.unicode.upper()
+                letter_is_pressed = event.unicode.lower()
 
                 for block in blocks:
                     if block.is_seeing and block.letter == letter_is_pressed:
@@ -145,6 +171,7 @@ def game_loop():
                                 player.rect.midbottom = (block.rect.centerx, block.rect.top)
                                 block_found = True
                                 scroll += 5
+                                start_time = time.time()
                                 block_sound.play()
 
                                 if all(not b.is_seeing for b in blocks):
@@ -160,6 +187,14 @@ def game_loop():
                 if not block_found:
                     errors -= 1
                     score -= 15
+                    for block in blocks:
+                        if block.is_seeing and block.letter != letter_is_pressed:
+                            block.incorrect = True
+                            break
+
+        if elapsed_time > time_limit:
+            out_of_the_way += 5
+            start_time = current_time
 
 
         if abs(scroll) > bg_width:
@@ -169,16 +204,18 @@ def game_loop():
 
         screen.blit(player.image, (player_position[0], player_position[1]))
 
-        score_text = normal_font.render(f"Sanidade caindo em : %{score}", True, WHITE)
+        score_text = normal_font.render(f"Perdido em:  {out_of_the_way}%", True, WHITE)
         screen.blit(score_text, (10, 10))
 
-        erros_text = normal_font.render(f"ERROS: {errors}", True, WHITE)
+        erros_text = normal_font.render(f"Erros: {errors}", True, WHITE)
         screen.blit(erros_text, (10, 50))
 
-        if score <= 0 or errors <= 0:
-            screen.fill(BLACK)
-            finish_text = normal_font.render("FIM DE JOGO...?", True, WHITE)
-            screen.blit(finish_text, (10, 100))
+        level_text = normal_font.render(f"Level 3", True, WHITE)
+        screen.blit(level_text, (600, 10))
+
+        if (out_of_the_way >= 100 or errors <= 0):
+            reset_game()
+
 
         moving_sprites.update(0.25)
         pygame.display.update()

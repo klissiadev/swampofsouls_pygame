@@ -14,7 +14,7 @@ FPS = 60
 
 # Colors
 BLACK = (0, 0, 0)
-WHITE = (185, 185, 185)
+WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 
 # Defining fonts
@@ -119,9 +119,12 @@ def game_loop():
         if abs((player_position[0] + 36) - thorns_positions[0]) < 70:
             press_e_text = x_small_font.render(f'Press E', True, WHITE)
             screen.blit(press_e_text, (thorns_positions[0] + 120, thorns_positions[1] - 60))
+            tip_text = small_font.render(f'For god''s sake! Something is blocking the passage...', True, WHITE)
+            screen.blit(tip_text, (400, HEIGHT - 200))
+            pygame.display.update()
 
         # Draw the tip
-        tip_text = small_font.render(f'Something is blocking the passage...', True, WHITE)
+        tip_text = small_font.render(f'Finally some light...', True, WHITE)
         screen.blit(tip_text, (50, HEIGHT - 60))
         pygame.display.update()
 
