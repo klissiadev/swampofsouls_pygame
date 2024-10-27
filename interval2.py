@@ -1,6 +1,6 @@
-
 import pygame
 import player as player_mod
+from classes.level_2_class import LevelTwoScreen
 
 # Initializing Pygame
 pygame.init()
@@ -29,102 +29,105 @@ background_sound.play()
 
 scroll = 0
 
-bg_images = []
-for i in range(2, 6):
-    bg_image = pygame.image.load(f'./level02/background/BG_{i}.png').convert_alpha()
-    bg_images.append(bg_image)
-
-bg_width = bg_images[0].get_width()
-
-# Player
-moving_sprites = pygame.sprite.Group()
-player = player_mod.Player(40, 370, "Right")
-moving_sprites.add(player)
-player_position = [40,370]
-
-# animal foot
-animal_foot = pygame.transform.scale(pygame.image.load('assets/objects/Animal Footstep.png').convert_alpha(), (60, 60))
-foot_positions = [WIDTH - 10 , HEIGHT - 100]
 
 
-def drawBackground():
-    static_bg_image = pygame.image.load(f'./level02/background/BG_1.png').convert_alpha()
-    screen.blit(static_bg_image, (0, 0))
+class Interval2Screen:
+    def __init__(self):
+        self.scroll = 0
+        self.moving_sprites = pygame.sprite.Group()
+        self.player = player_mod.Player(40, 370, "Right")
+        self.moving_sprites.add(self.player)
+        self.player_position = [40, 370]
+        self.bg_image = [pygame.image.load(f'./level02/background/BG_{i}.png').convert_alpha() for i in range(2, 6)]
+        self.bg_width = self.bg_image[0].get_width()
 
-    for x in range(6):
-        speed = 1
-        for l in bg_images:
-            screen.blit(l, ((x * bg_width) - scroll * speed, 0))
-            speed += 0.6
+        self.background_sound = pygame.mixer.Sound('./assets/sounds-effects/Alone at Twilight 5.wav')
+        self.click_sound = pygame.mixer.Sound('./level04/click-keyboard.mp3')
+        self.background_sound.set_volume(0.5)  # Define o volume para 50%
+        self.background_sound.play()
 
-# Game loop
-def game_loop():
-    global scroll, bg_width
-
-    running = True
-
-    while running:
-        screen.fill(WHITE)
-
-        clock.tick(FPS)
-
-        drawBackground()
-        screen.blit(player.image, (player_position[0], player_position[1]))
-
-        # Check events
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.KEYDOWN:
-                if event.unicode.upper() == 'E':
-                    running = False
-
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_RIGHT]:
-            player.orientation = 'Right'
-            if player_position[0] < WIDTH - 300:
-                player_position[0] += 4
-            else:
-                scroll += 2
-                foot_positions[0] -= 4
-            player.animate()
-        elif keys[pygame.K_LEFT]:
-            player.orientation = "Left"
-
-            if player_position[0] > 40:
-                player_position[0] -= 4
-                if scroll > 0:
-                    scroll -= 2
-                    foot_positions[0] += 4
-            player.animate()
-        else:
-            player.stopAnimating()
-
-        if abs(scroll) > bg_width:
-            scroll = 0
-        elif abs(scroll) < 0:
-            scroll = bg_width
-
-        moving_sprites.update(0.25)
-
-        #Draw footsteps
-        screen.blit(animal_foot, (foot_positions[0], foot_positions[1]))
-
-        if abs((player_position[0] + 36) - foot_positions[0]) < 70:
-            press_e_text = x_small_font.render(f'Press E', True, WHITE)
-            screen.blit(press_e_text, (foot_positions[0] + 10 , HEIGHT - 35))
-            tip_text = small_font.render(f'Oh...? footsteps of animals...', True, WHITE)
-            screen.blit(tip_text, (400, HEIGHT - 200))
-            pygame.display.update()
+        self.animal_foot = pygame.transform.scale(pygame.image.load('assets/objects/Animal Footstep.png').convert_alpha(), (60, 60))
+        self.foot_positions = [WIDTH - 10, HEIGHT - 100]
 
 
-        # Draw the tip
-        tip_text = small_font.render(f'Where am i supposed to go...?', True, WHITE)
-        screen.blit(tip_text, (50, HEIGHT - 60))
-        pygame.display.update()
+    def drawBackground(self):
+            static_bg_image = pygame.image.load(f'./level02/background/BG_1.png').convert_alpha()
+            screen.blit(static_bg_image, (0, 0))
 
-    pygame.quit()
+            for x in range(6):
+                speed = 1
+                for l in self.bg_images:
+                    screen.blit(l, ((x * self.bg_width) - self.scroll * speed, 0))
+                    speed += 0.6
+
+    def run(self):
+
+            running = True
+
+            while running:
+                screen.fill(WHITE)
+
+                clock.tick(FPS)
+
+                self.drawBackground()
+                screen.blit(self.player.image, (self.player_position[0], self.player_position[1]))
+
+                # Check events
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        running = False
+                    if event.type == pygame.KEYDOWN:
+                        if event.unicode.upper() == 'E':
+                            running = False
+
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_RIGHT]:
+                    self.player.orientation = 'Right'
+                    if self.player_position[0] < WIDTH - 300:
+                        self.player_position[0] += 4
+                    else:
+                        self.scroll += 2
+                        self.foot_positions[0] -= 4
+                    self.player.animate()
+                elif keys[pygame.K_LEFT]:
+                    self.player.orientation = "Left"
+
+                    if self.player_position[0] > 40:
+                        self.player_position[0] -= 4
+                        if self.scroll > 0:
+                            self.scroll -= 2
+                            self.foot_positions[0] += 4
+                    self.player.animate()
+                else:
+                    self.player.stopAnimating()
+
+                if abs(self.scroll) > self.bg_width:
+                    self.scroll = 0
+                elif abs(self.scroll) < 0:
+                    self.scroll = self.bg_width
+
+                self.moving_sprites.update(0.25)
+
+                #Draw footsteps
+                screen.blit(self.animal_foot, (self.foot_positions[0], self.foot_positions[1]))
+
+                if abs((self.player_position[0] + 36) - self.foot_positions[0]) < 70:
+                    press_e_text = x_small_font.render(f'Press E', True, WHITE)
+                    screen.blit(press_e_text, (self.foot_positions[0] + 10 , HEIGHT - 35))
+                    tip_text = small_font.render(f'Oh...? footsteps of animals...', True, WHITE)
+                    screen.blit(tip_text, (400, HEIGHT - 200))
+                    pygame.display.update()
+
+
+                # Draw the tip
+                tip_text = small_font.render(f'Where am i supposed to go...?', True, WHITE)
+                screen.blit(tip_text, (50, HEIGHT - 60))
+                pygame.display.update()
+
+            pygame.quit()
 
 
 if __name__ == '__main__':
-    game_loop()
+    level_two_screen = LevelTwoScreen()
+    level_two_screen.run()
+    pygame.quit()

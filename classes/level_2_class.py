@@ -34,11 +34,11 @@ pygame.display.set_caption("Swamp of Souls - Fase 02")
 # Background and images
 bg_images = []
 for i in range(2, 6):
-    bg_image = pygame.image.load(f'level02/background/BG_{i}.png').convert_alpha()
+    bg_image = pygame.image.load(f'./level02/background/BG_{i}.png').convert_alpha()
     bg_images.append(bg_image)
 bg_width = bg_images[0].get_width()
 
-static_bg_image = pygame.image.load(f'level02/background/BG_1.png').convert_alpha()
+static_bg_image = pygame.image.load(f'./level02/background/BG_1.png').convert_alpha()
 
 # Player sprite
 moving_sprites = pygame.sprite.Group()
@@ -88,7 +88,7 @@ class LevelTwoScreen:
             self.opacity -= int(self.opacity_value)
 
     def create_letter_row(self):
-        with open('level02/text/LetterRowLevel02.txt', 'r') as file:
+        with open('./level02/text/LetterRowLevel02.txt', 'r') as file:
             return [line.rstrip('\n').replace("'", "") for line in file]
 
     def draw_letters(self):
@@ -107,7 +107,8 @@ class LevelTwoScreen:
 
             text = font.render(letter, True, self.letter_color)
             text.set_alpha(self.opacity)
-            image = pygame.transform.scale(pygame.image.load('./assets/solo_assets/Animal Footstep.png').convert_alpha(), (50, 50))
+            image = pygame.transform.scale(pygame.image.load(
+                './assets/solo_assets/Animal Footstep.png').convert_alpha(), (50, 50))
             image.set_alpha(self.opacity)
             game_screen.blit(text, (x, y))
 
@@ -124,6 +125,9 @@ class LevelTwoScreen:
                 self.last_letter_position = x
 
     def run(self):
+
+        self.running = True
+
         while self.running:
             game_screen.fill(WHITE)
             clock.tick(FPS)
