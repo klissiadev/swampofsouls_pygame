@@ -64,12 +64,13 @@ class Player(pygame.sprite.Sprite):
             self.current_sprite += speed
             if self.current_sprite >= len(self.sprites):
                 self.current_sprite = 0  # Loop back to start of walking sprites
+                self.isAnimating = False
             self.image = self.sprites[int(self.current_sprite)]
         elif self.isHoldingJar:
             self.image = self.holding_jar_sprite  # Keep the jar-holding sprite when holding jar
             if self.isCatching:
                 self.image = self.catching_sprite
         else:
-            self.image = self.idle_sprite  # Default to idle sprite when not animating
+            self.stopAnimating()  # Default to idle sprite when not animating
 
         self.flip_sprites()
