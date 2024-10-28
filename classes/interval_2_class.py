@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 import player as player_mod
 from classes.level_2_class import LevelTwoScreen
@@ -49,6 +51,13 @@ class Interval2Screen:
         self.animal_foot = pygame.transform.scale(pygame.image.load('./assets/objects/Animal Footstep.png').convert_alpha(), (60, 60))
         self.foot_positions = [WIDTH - 10, HEIGHT - 100]
 
+        self.opacity = 255
+
+    def darken_screen(self):
+        dark_overlay = pygame.Surface((WIDTH, HEIGHT))
+        dark_overlay.set_alpha(self.opacity)
+        dark_overlay.fill(BLACK)
+        screen.blit(dark_overlay, (0, 0))
 
     def drawBackground(self):
             static_bg_image = pygame.image.load(f'./level02/background/BG_1.png').convert_alpha()
@@ -69,13 +78,16 @@ class Interval2Screen:
 
                 clock.tick(FPS)
 
+                # Fade-out effect
+                self.opacity = max(self.opacity - 5, 0)
+
                 self.drawBackground()
                 screen.blit(self.player.image, (self.player_position[0], self.player_position[1]))
 
                 # Check events
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
-                        running = False
+                        sys.exit()
                     if event.type == pygame.KEYDOWN:
                         if event.unicode.upper() == 'E':
                             running = False
@@ -122,6 +134,7 @@ class Interval2Screen:
                 # Draw the tip
                 tip_text = small_font.render(f'Finally some light...', True, WHITE)
                 screen.blit(tip_text, (50, HEIGHT - 60))
+                self.darken_screen()
                 pygame.display.update()
 
 

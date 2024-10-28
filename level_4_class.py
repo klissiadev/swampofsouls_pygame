@@ -1,7 +1,5 @@
 import sys
-
 import pygame
-import self
 import time
 import math
 
@@ -187,6 +185,7 @@ class LevelFourScreen:
         stability_y = 0
 
         while running:
+            game_screen.fill(WHITE)
             clock.tick(FPS)
             game_screen.fill(BLACK)
             for i in range(0, self.tiles):

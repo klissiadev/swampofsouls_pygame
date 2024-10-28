@@ -1,8 +1,7 @@
 import sys
+import time
 
 import pygame
-import self
-import time
 
 import player as player_mod
 
@@ -124,6 +123,7 @@ class LevelTwoScreen:
                 self.last_letter = self.letter_row[-1]
                 self.last_letter_position = x
 
+
     def run(self):
 
         self.running = True
@@ -133,9 +133,12 @@ class LevelTwoScreen:
             clock.tick(FPS)
             self.draw_background()
 
+            # Fade-out effect
+            self.opacity = max(self.opacity - 5, 0)
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    self.running = False
+                    sys.exit()
                 elif event.type == pygame.KEYDOWN:
                     if event.unicode.upper() == self.letter_row[0].upper():
                         click_sound.play()

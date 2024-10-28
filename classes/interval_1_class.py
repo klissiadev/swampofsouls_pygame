@@ -64,6 +64,7 @@ class Firefly(pygame.sprite.Sprite):
         self.vx = random.uniform(-1, 1)  # Horizontal speed
         self.vy = random.uniform(-1, 1)  # Vertical speed
 
+
     def update(self):
         # Movement (existing logic)
         self.rect.x += self.vx
