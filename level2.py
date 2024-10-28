@@ -1,6 +1,5 @@
 import pygame
 import time
-import math
 import player as player_mod
 
 # Initializing Pygame
@@ -40,7 +39,7 @@ last_letter = 0
 
 #sounds
 background_sound = pygame.mixer.Sound('./level04/witch-forest-atmo-24654.mp3')
-click_sound = pygame.mixer.Sound('./level04/click-keyboard.mp3')
+click_sound = pygame.mixer.Sound('level04/click-keyboard.mp3')
 background_sound.set_volume(0.5)
 background_sound.play()
 

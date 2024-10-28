@@ -22,7 +22,7 @@ x_small_font = pygame.font.Font("level04/IMFellEnglish-Regular.ttf", 16)
 # Screen dimensions
 WIDTH, HEIGHT = 1320, 680
 game_screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Changed 'screen' to 'game_screen'
-pygame.display.set_caption("Interval - 02")
+pygame.display.set_caption("Level - 01")
 
 # Background images
 bg_images = [pygame.image.load(f'level02/background/BG_{i}.png').convert_alpha() for i in range(2, 6)]
@@ -31,6 +31,7 @@ bg_width = bg_images[0].get_width()
 # Players sounds
 background_sound = pygame.mixer.Sound('assets/sounds-effects/Alone at Twilight 5.wav')
 click_sound = pygame.mixer.Sound('level04/click-keyboard.mp3')
+click_sound.set_volume(0.4)
 background_sound.set_volume(0.5)  # Set volume to 50%
 background_sound.play()
 
@@ -94,8 +95,10 @@ class LevelOneScreen:
                     running = False
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_f:
+                        click_sound.play()
                         key_pressed = "F"
                     elif event.key == pygame.K_j:
+                        click_sound.play()
                         key_pressed = "J"
 
             # Update fireflies and check for "catch" interaction
@@ -134,6 +137,7 @@ class LevelOneScreen:
             self.fireflies.draw(game_screen)
 
             pygame.display.update()
+
 
 if __name__ == '__main__':
     level_one = LevelOneScreen()

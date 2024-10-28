@@ -135,6 +135,7 @@ class IntervalScreen:
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.unicode.upper() == 'E' and abs((self.player_position[0] + 36) - jar_positions[0]) < 70:
+                        click_sound.play()
                      # Enter level 1 phase
                         running = False
                         # print("Player grabbed the glass")

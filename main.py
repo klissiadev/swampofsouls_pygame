@@ -4,6 +4,10 @@ from classes.interval_1_class import IntervalScreen
 from classes.interval_2_class import Interval2Screen
 from classes.interval_3_class import Interval3Screen
 from interval4 import Interval4Screen
+from tutorial1 import Tutorial1Screen
+from tutorial2 import Tutorial2Screen
+from tutorial3 import Tutorial3Screen
+from tutorial4 import Tutorial4Screen
 from classes.level_2_class import LevelTwoScreen
 from level1 import LevelOneScreen
 from level3 import LevelThreeOnScreen
@@ -27,11 +31,17 @@ def main():
     game_screen = IntervalScreen()  # Inicializa o jogo
     game_screen.run()  # Executa o jogo
 
+    tutorial_screen = Tutorial1Screen()
+    tutorial_screen.run()
+
     level_screen = LevelOneScreen()
     level_screen.run()
 
     game_screen = Interval2Screen()
     game_screen.run()
+
+    tutorial_screen = Tutorial2Screen()
+    tutorial_screen.run()
 
     level_screen = LevelTwoScreen()
     level_screen.run()
@@ -39,11 +49,17 @@ def main():
     game_screen = Interval3Screen()
     game_screen.run()
 
+    tutorial_screen = Tutorial3Screen()
+    tutorial_screen.run()
+
     level_screen = LevelThreeOnScreen()
     level_screen.run()
 
     game_screen = Interval4Screen()
     game_screen.run()
+
+    tutorial_screen = Tutorial4Screen()
+    tutorial_screen.run()
 
     level_screen = LevelFourScreen()
     level_screen.run()

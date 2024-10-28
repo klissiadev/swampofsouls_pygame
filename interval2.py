@@ -78,6 +78,7 @@ class Interval2Screen:
                         running = False
                     if event.type == pygame.KEYDOWN:
                         if event.unicode.upper() == 'E':
+                            self.click_sound.play()
                             running = False
 
                 keys = pygame.key.get_pressed()

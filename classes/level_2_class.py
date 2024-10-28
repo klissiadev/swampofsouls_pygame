@@ -1,7 +1,7 @@
 import sys
-import time
 
 import pygame
+import time
 
 import player as player_mod
 
@@ -46,7 +46,7 @@ moving_sprites.add(player)
 
 # Sounds
 background_sound = pygame.mixer.Sound('./level04/witch-forest-atmo-24654.mp3')
-click_sound = pygame.mixer.Sound('./level04/click-keyboard.mp3')
+click_sound = pygame.mixer.Sound('level04/click-keyboard.mp3')
 background_sound.set_volume(0.5)
 background_sound.play()
 
@@ -123,7 +123,6 @@ class LevelTwoScreen:
                 self.last_letter = self.letter_row[-1]
                 self.last_letter_position = x
 
-
     def run(self):
 
         self.running = True
@@ -132,9 +131,6 @@ class LevelTwoScreen:
             game_screen.fill(WHITE)
             clock.tick(FPS)
             self.draw_background()
-
-            # Fade-out effect
-            self.opacity = max(self.opacity - 5, 0)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -179,4 +175,3 @@ if __name__ == '__main__':
     level_two = LevelTwoScreen()
     level_two.run()
     pygame.quit()
-

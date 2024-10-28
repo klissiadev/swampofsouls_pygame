@@ -1,5 +1,4 @@
 import pygame
-
 PLAYER_WIDTH = 32
 PLAYER_HEIGHT = 64
 

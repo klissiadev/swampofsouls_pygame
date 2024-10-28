@@ -28,6 +28,7 @@ pygame.display.set_caption("Interval - 02")
 background_sound = pygame.mixer.Sound('./level03/Alone at Twilight 5.wav')
 background_sound.set_volume(0.5)
 background_sound.play()
+click_sound = pygame.mixer.Sound('level04/click-keyboard.mp3')
 
 scroll = 0
 
@@ -90,6 +91,7 @@ class Interval2Screen:
                         sys.exit()
                     if event.type == pygame.KEYDOWN:
                         if event.unicode.upper() == 'E':
+                            click_sound.play()
                             running = False
 
                 keys = pygame.key.get_pressed()

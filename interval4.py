@@ -64,6 +64,7 @@ class Interval4Screen:
                 return False
             if event.type == pygame.KEYDOWN:
                 if event.unicode.upper() == 'E' and self.player_position[0] > self.WIDTH - 230:
+                    self.click_sound.play()
                     return False
         return True
 
@@ -92,9 +93,9 @@ class Interval4Screen:
             self.draw_elements()
             pygame.display.update()
 
-        pygame.quit()
 
 
 if __name__ == '__main__':
     game = Interval4Screen()
     game.run()
+    pygame.quit()
