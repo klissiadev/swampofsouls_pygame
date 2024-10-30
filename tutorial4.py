@@ -12,7 +12,7 @@ class Tutorial4Screen:
         # Screen dimensions
         self.WIDTH, self.HEIGHT = 1320, 680
         self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-        pygame.display.set_caption("Level - 4")
+        pygame.display.set_caption("Swamp of Souls")
 
         # Background and images
         self.bg_image = pygame.image.load('./assets/tutorials/TUTORIAL4.png').convert_alpha()

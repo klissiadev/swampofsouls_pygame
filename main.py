@@ -1,4 +1,6 @@
 import pygame
+
+from ComingSoonScreen import ComingSoonScreen
 from classes.menu_class import SwampOfSoulsScreen
 from classes.interval_1_class import IntervalScreen
 from classes.interval_2_class import Interval2Screen
@@ -67,6 +69,9 @@ def main():
 
     level_screen = LevelFourScreen()
     level_screen.run()
+
+    history_screen = ComingSoonScreen()
+    history_screen.run()
 
 if __name__ == '__main__':
     main()

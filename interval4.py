@@ -13,7 +13,7 @@ class Interval4Screen:
         # Screen dimensions
         self.WIDTH, self.HEIGHT = 1320, 680
         self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-        pygame.display.set_caption("Interval - 03")
+        pygame.display.set_caption("Swamp of Souls")
 
         # Screen background
         self.background_image = pygame.transform.scale(pygame.image.load('./assets/backgrounds/BG-6.png'), (1400, 690))
