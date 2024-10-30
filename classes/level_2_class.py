@@ -50,6 +50,7 @@ click_sound = pygame.mixer.Sound('level04/click-keyboard.mp3')
 background_sound.set_volume(0.5)
 background_sound.play()
 
+game_over_background = pygame.image.load('./level02/background/GAMEOVER2.png').convert()
 
 class LevelTwoScreen:
     def __init__(self):

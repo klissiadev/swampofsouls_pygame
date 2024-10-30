@@ -47,6 +47,7 @@ class LevelFourScreen:
     def __init__(self):
         self.running = True
         self.background_image = pygame.image.load('./level04/background-sky.png').convert()
+        self.gameover_img = pygame.image.load('./level04/GAMEOVER4.png').convert()
         self.bg_w = self.background_image.get_width()
         self.tiles = math.ceil(WIDTH / self.bg_w) + 1
         self.scroll_bg = 0
@@ -149,45 +150,36 @@ class LevelFourScreen:
         floor = pygame.transform.scale(pygame.image.load('./level04/floor.png').convert_alpha(), (320, 250))
         game_screen.blit(floor, (self.plank_positions[self.total_planks - 1][0] + offset_x + 75, self.plank_positions[self.total_planks - 1][1]))
 
-    def draw_game_state(self,offset_x, stability_y):
 
+    def show_game_over_screen(self):
+        game_screen.fill(BLACK)
+        game_screen.blit(self.gameover_img, (WIDTH // 2 - self.gameover_img.get_width() // 2, HEIGHT // 2 - self.gameover_img.get_height() // 2))
+        pygame.display.flip()
+        pygame.time.delay(3000)  # Espera 5 segundos
+
+    def draw_game_state(self, offset_x, stability_y):
         shadow_offset = 2
-
-        # Draw the player
         player_img = pygame.transform.scale(player.image, (112, 200))
-        game_screen.blit(player_img, (self.player_position[0] + offset_x - 37, self.player_position[1] + stability_y + 45))
-
-        # Draw moon
+        game_screen.blit(player_img,
+                         (self.player_position[0] + offset_x - 37, self.player_position[1] + stability_y + 45))
         game_screen.blit(self.moon, (605, 53))
 
-        # Draw level
         level_text = normal_font.render(f'Level 4', True, WHITE)
         game_screen.blit(level_text, (WIDTH // 2 - 50, 20))
 
-        # Draw row of letters (next letter in center)
         center_x = WIDTH // 2
         for i, letter in enumerate(self.letter_row):
-            if i == 0 and self.error_time and time.time() - self.error_time < self.error_color_duration:
-                letter_color = RED
-            else:
-                letter_color = WHITE
+            letter_color = RED if i == 0 and self.error_time and time.time() - self.error_time < self.error_color_duration else WHITE
             letter_surface = font.render(letter, True, letter_color)
             x_position = center_x + (i * 100)
-
             shadow_text = font.render(letter, True, (50, 50, 50))
             game_screen.blit(shadow_text, (x_position + shadow_offset, (HEIGHT / 2) - 50 + shadow_offset))
-
             game_screen.blit(letter_surface, (x_position, HEIGHT // 2 - 50))
 
-        # Draw the number of crossed planks
         plank_text = small_font.render(f'Crossed planks: {self.crossed_planks}', True, WHITE)
         game_screen.blit(plank_text, (50, 50))
-
-        # Draw errors
         error_text = small_font.render(f'Errors: {self.errors}/{self.max_errors}', True, BROWN)
         game_screen.blit(error_text, (50, 100))
-
-        # Design plank stability
         stability_text = small_font.render(f'Stability: {self.bridge_stability}%', True, WHITE)
         game_screen.blit(stability_text, (50, 150))
 
@@ -252,6 +244,7 @@ class LevelFourScreen:
 
             # Check fault conditions
             if self.bridge_stability <= 0 or self.errors >= self.max_errors:
+                self.show_game_over_screen()  # Exibe a tela de "game over" antes de reiniciar
                 self.crossed_planks = 0
                 self.errors = 0
                 self.bridge_stability = 100
@@ -282,4 +275,5 @@ if __name__ == '__main__':
     level_two = LevelFourScreen()
     level_two.run()
     pygame.quit()
+
 
