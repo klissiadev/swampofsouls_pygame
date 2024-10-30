@@ -1,10 +1,5 @@
-import random
 import pygame
-import time
-import math
-from pygame.transform import scale
 import player as player_mod
-
 
 class Interval4Screen:
     def __init__(self):
@@ -43,6 +38,18 @@ class Interval4Screen:
         self.player = player_mod.Player(40, 370, "Right")
         self.moving_sprites.add(self.player)
         self.player_position = [40, 370]
+
+        # Opacity for fade effect
+        self.opacity = 255
+        self.fade_speed = 5  # Control the speed of the fade-out effect
+
+    def darken_screen(self):
+        if self.opacity > 0:
+            dark_overlay = pygame.Surface((self.WIDTH, self.HEIGHT))
+            dark_overlay.set_alpha(self.opacity)
+            dark_overlay.fill(self.BLACK)
+            self.screen.blit(dark_overlay, (0, 0))
+            self.opacity -= self.fade_speed  # Reduce opacity to create fade-out effect
 
     def draw_elements(self):
         # Draw background and player
@@ -91,9 +98,11 @@ class Interval4Screen:
             self.update_player_position()
             self.moving_sprites.update(0.20)
             self.draw_elements()
+            self.darken_screen()
             pygame.display.update()
 
-
+        # Stop the background sound after exiting
+        self.background_sound.stop()
 
 if __name__ == '__main__':
     game = Interval4Screen()

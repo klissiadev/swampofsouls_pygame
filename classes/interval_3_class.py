@@ -42,6 +42,18 @@ class Interval3Screen:
         self.thorns = pygame.transform.scale(pygame.image.load('./level03/Group 29 (1).png').convert_alpha(), (280, 280))
         self.thorns_positions = [WIDTH + 100, HEIGHT - 350]
 
+        # Opacity for fade effect
+        self.opacity = 255
+        self.fade_speed = 5  # Control the speed of the fade-out effect
+
+    def darken_screen(self):
+        if self.opacity > 0:
+            dark_overlay = pygame.Surface((WIDTH, HEIGHT))
+            dark_overlay.set_alpha(self.opacity)
+            dark_overlay.fill(BLACK)
+            screen.blit(dark_overlay, (0, 0))
+            self.opacity -= self.fade_speed  # Reduce opacity to create fade-out effect
+
     def drawBackground(self):
         static_bg_image = pygame.image.load(f'./level02/background/BG_1.png').convert_alpha()
         screen.blit(static_bg_image, (0, 0))
@@ -117,6 +129,8 @@ class Interval3Screen:
             # Draw the tip
             tip_text = small_font.render(f'Where am i supposed to go...?', True, WHITE)
             screen.blit(tip_text, (50, HEIGHT - 60))
+
+            self.darken_screen()
             pygame.display.update()
 
 

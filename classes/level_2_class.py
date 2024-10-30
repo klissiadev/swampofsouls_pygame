@@ -71,6 +71,18 @@ class LevelTwoScreen:
         self.current_letter_index = 0
         self.time = pygame.time
 
+        # Opacity for fade effect
+        self.opacity2 = 255
+        self.fade_speed = 5  # Control the speed of the fade-out effect
+
+    def darken_screen(self):
+        if self.opacity2 > 0:
+            dark_overlay = pygame.Surface((WIDTH, HEIGHT))
+            dark_overlay.set_alpha(self.opacity2)
+            dark_overlay.fill(BLACK)
+            game_screen.blit(dark_overlay, (0, 0))
+            self.opacity2 -= self.fade_speed  # Reduce opacity to create fade-out effect
+
     def draw_background(self):
         # Draw the static background first
         game_screen.blit(static_bg_image, (0, 0))
@@ -166,7 +178,7 @@ class LevelTwoScreen:
                 self.running = False
             elif len(self.letter_row) <= 0:
                 self.running = False
-
+            self.darken_screen()
             pygame.display.update()
             clock.tick(FPS)
 

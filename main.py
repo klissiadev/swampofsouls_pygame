@@ -12,6 +12,7 @@ from classes.level_2_class import LevelTwoScreen
 from level1 import LevelOneScreen
 from level3 import LevelThreeOnScreen
 from level_4_class import LevelFourScreen
+from history import HistoryScreen
 
 # Inicializar o pygame
 pygame.init()
@@ -26,6 +27,9 @@ def main():
     # Inicializar o menu
     menu_screen = SwampOfSoulsScreen()  # Passa a tela para o menu
     menu_screen.run()  # Executa o menu
+
+    history = HistoryScreen()
+    history.run()
 
     # Após o menu, inicializa o jogo
     game_screen = IntervalScreen()  # Inicializa o jogo

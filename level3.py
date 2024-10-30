@@ -54,6 +54,18 @@ class LevelThreeOnScreen:
         self.cont = 0
         self.max_blocks = 45
 
+        # Opacity for fade effect
+        self.opacity = 255
+        self.fade_speed = 5  # Control the speed of the fade-out effect
+
+    def darken_screen(self):
+        if self.opacity > 0:
+            dark_overlay = pygame.Surface((width, height), pygame.SRCALPHA)
+            dark_overlay.set_alpha(self.opacity)
+            dark_overlay.fill(BLACK)
+            screen.blit(dark_overlay, (0, 0))
+            self.opacity -= self.fade_speed  # Reduce opacity to create fade-out effect
+
     def drawBackground(self, bg_images):
         static_bg_image = pygame.image.load(f'./level02/background/BG_1.png').convert_alpha()
         screen.blit(static_bg_image, (0, 0))
@@ -172,7 +184,7 @@ class LevelThreeOnScreen:
             if (self.out_of_the_way >= 100 or self.errors <= 0):
                 self.reset_game()
 
-
+            self.darken_screen()
             self.moving_sprites.update(0.25)
             pygame.display.update()
 

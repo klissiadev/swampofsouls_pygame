@@ -64,6 +64,18 @@ class LevelFourScreen:
         self.plank_positions = [(i * 69, HEIGHT // 2 + 200) for i in range(self.total_planks)]
         self.player_position = [self.plank_positions[0][0], self.plank_positions[0][1] - 200]
 
+        # Opacity for fade effect
+        self.opacity = 255
+        self.fade_speed = 5  # Control the speed of the fade-out effect
+
+    def darken_screen(self):
+        if self.opacity > 0:
+            dark_overlay = pygame.Surface((WIDTH, HEIGHT))
+            dark_overlay.set_alpha(self.opacity)
+            dark_overlay.fill(BLACK)
+            game_screen.blit(dark_overlay, (0, 0))
+            self.opacity -= self.fade_speed  # Reduce opacity to create fade-out effect
+
     def render_text_with_alpha(self, text, font, color, alpha):
         text_surface = font.render(text, True, color)
         text_surface = self.set_alpha(text_surface, alpha)
@@ -260,6 +272,7 @@ class LevelFourScreen:
             if self.player_position[0] > WIDTH:  # If the player has already left the screen
                 running = False  # End the game
 
+            self.darken_screen()
             moving_sprites.update(0.25)
             pygame.display.flip()
             pygame.display.update()
