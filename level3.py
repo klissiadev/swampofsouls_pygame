@@ -31,7 +31,7 @@ block_sound.set_volume(0.2)
 
 # random variables
 scroll = 0
-normal_font = pygame.font.Font('assets/IMFellEnglish-Regular.ttf', 40)
+normal_font = pygame.font.Font('assets/IMFellEnglish-Regular.ttf', 24)
 font = pygame.font.Font(None, 50)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -54,7 +54,7 @@ class LevelThreeOnScreen:
         self.errors = 5
         self.score = 0
         self.cont = 0
-        self.max_blocks = 45
+        self.max_blocks = 30
 
         # Opacity for fade effect
         self.opacity = 255
@@ -175,10 +175,10 @@ class LevelThreeOnScreen:
             screen.blit(self.player.image, (self.player_position[0], self.player_position[1]))
 
             score_text = normal_font.render(f"Perdido em:  {self.out_of_the_way}%", True, WHITE)
-            screen.blit(score_text, (10, 10))
+            screen.blit(score_text, (180, 30))
 
             erros_text = normal_font.render(f"Erros: {self.errors}", True, WHITE)
-            screen.blit(erros_text, (10, 50))
+            screen.blit(erros_text, (180, 70))
 
             level_text = normal_font.render(f"Level 3", True, WHITE)
             screen.blit(level_text, (600, 10))

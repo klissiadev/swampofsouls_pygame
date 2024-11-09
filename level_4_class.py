@@ -23,7 +23,7 @@ RED = (100, 20, 0)
 # Defining fonts
 font = pygame.font.Font(None, 100)
 normal_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 36)
-small_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 30)
+small_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 24)
 
 # Screen dimensions
 WIDTH, HEIGHT = 1320, 680
@@ -56,7 +56,7 @@ class LevelFourScreen:
         self.errors = 0
         self.max_errors = 5
         self.start_time = time.time()
-        self.time_limit = 8
+        self.time_limit = 3
         self.letter_row = self.create_letter_row()
         self.bridge_stability = 100  # The percentage of stability of the bridge
         self.error_time = None  # Time when an error occurs
@@ -177,11 +177,18 @@ class LevelFourScreen:
             game_screen.blit(letter_surface, (x_position, HEIGHT // 2 - 50))
 
         plank_text = small_font.render(f'Crossed planks: {self.crossed_planks}', True, WHITE)
-        game_screen.blit(plank_text, (50, 50))
+        game_screen.blit(plank_text, (180, 30))
         error_text = small_font.render(f'Errors: {self.errors}/{self.max_errors}', True, BROWN)
-        game_screen.blit(error_text, (50, 100))
+        game_screen.blit(error_text, (180, 60))
         stability_text = small_font.render(f'Stability: {self.bridge_stability}%', True, WHITE)
-        game_screen.blit(stability_text, (50, 150))
+        game_screen.blit(stability_text, (180, 90))
+
+        if len(self.letter_row) > 0:
+            image_letter = pygame.transform.scale(
+                pygame.image.load(
+                    f'./assets/keys/key_{self.letter_row[0].upper().replace(' ', '')}.png').convert_alpha(),
+                (100, 100))
+            game_screen.blit(image_letter,(30,30))
 
     def run(self):
         running = True

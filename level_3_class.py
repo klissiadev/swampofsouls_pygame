@@ -1,5 +1,4 @@
 import pygame
-import player as player_mod
 
 #Screen settings
 width = 1320
@@ -30,6 +29,13 @@ class Block:
             text1 = font.render(self.letter, True, (color))
             text_rect = text1.get_rect(center=(pos.centerx + 200 , pos.top - 10))
             screen.blit(text1, text_rect)
+
+            if len(self.letter) > 0:
+                image_letter = pygame.transform.scale(
+                    pygame.image.load(
+                        f'./assets/keys/key_{self.letter[0].upper().replace(' ', '')}.png').convert_alpha(),
+                    (100, 100))
+                screen.blit(image_letter,(30,30))
 
     def reset_block(self, x, y, letter):
         self.rect.topleft = (x, y)

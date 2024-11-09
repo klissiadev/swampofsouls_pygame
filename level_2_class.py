@@ -175,6 +175,13 @@ class LevelTwoScreen:
             self.lower_opacity()
             self.draw_letters()
 
+            if len(self.letter_row) > 0:
+                image_letter = pygame.transform.scale(
+                    pygame.image.load(
+                        f'./assets/keys/key_{self.letter_row[0].upper().replace(' ', '')}.png').convert_alpha(),
+                    (100, 100))
+                game_screen.blit(image_letter,(30,30))
+
             if self.opacity <= 0:
                 self.running = False
             elif len(self.letter_row) <= 0:
