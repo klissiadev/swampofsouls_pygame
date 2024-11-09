@@ -33,11 +33,11 @@ pygame.display.set_caption("Swamp of Souls - Fase 02")
 # Background and images
 bg_images = []
 for i in range(2, 6):
-    bg_image = pygame.image.load(f'./level02/background/BG_{i}.png').convert_alpha()
+    bg_image = pygame.image.load(f'assets/background/BG_{i}.png').convert_alpha()
     bg_images.append(bg_image)
 bg_width = bg_images[0].get_width()
 
-static_bg_image = pygame.image.load(f'./level02/background/BG_1.png').convert_alpha()
+static_bg_image = pygame.image.load(f'assets/background/BG_1.png').convert_alpha()
 
 # Player sprite
 moving_sprites = pygame.sprite.Group()
@@ -45,12 +45,12 @@ player = player_mod.Player(WIDTH / 2 - 350, 370, "Right")
 moving_sprites.add(player)
 
 # Sounds
-background_sound = pygame.mixer.Sound('./level04/witch-forest-atmo-24654.mp3')
-click_sound = pygame.mixer.Sound('level04/click-keyboard.mp3')
+background_sound = pygame.mixer.Sound('assets/witch-forest-atmo-24654.mp3')
+click_sound = pygame.mixer.Sound('assets/click-keyboard.mp3')
 background_sound.set_volume(0.5)
 background_sound.play()
 
-game_over_background = pygame.image.load('./level02/background/GAMEOVER2.png').convert()
+game_over_background = pygame.image.load('assets/background/GAMEOVER2.png').convert()
 
 class LevelTwoScreen:
     def __init__(self):
@@ -100,7 +100,7 @@ class LevelTwoScreen:
             self.opacity -= int(self.opacity_value)
 
     def create_letter_row(self):
-        with open('./level02/text/LetterRowLevel02.txt', 'r') as file:
+        with open('assets/LetterRowLevel02.txt', 'r') as file:
             return [line.rstrip('\n').replace("'", "") for line in file]
 
     def draw_letters(self):
@@ -120,7 +120,7 @@ class LevelTwoScreen:
             text = font.render(letter, True, self.letter_color)
             text.set_alpha(self.opacity)
             image = pygame.transform.scale(pygame.image.load(
-                './assets/solo_assets/Animal Footstep.png').convert_alpha(), (50, 50))
+                'assets/solo_assets/Animal Footstep.png').convert_alpha(), (50, 50))
             image.set_alpha(self.opacity)
             game_screen.blit(text, (x, y))
 
@@ -182,9 +182,3 @@ class LevelTwoScreen:
             self.darken_screen()
             pygame.display.update()
             clock.tick(FPS)
-
-# Example of how to run this screen
-if __name__ == '__main__':
-    level_two = LevelTwoScreen()
-    level_two.run()
-    pygame.quit()

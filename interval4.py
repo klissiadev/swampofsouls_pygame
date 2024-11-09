@@ -16,7 +16,7 @@ class Interval4Screen:
         pygame.display.set_caption("Swamp of Souls")
 
         # Screen background
-        self.background_image = pygame.transform.scale(pygame.image.load('./assets/backgrounds/BG-6.png'), (1400, 690))
+        self.background_image = pygame.transform.scale(pygame.image.load('assets/backgrounds/BG-6.png'), (1400, 690))
 
         # Colors
         self.BLACK = (0, 0, 0)
@@ -24,12 +24,12 @@ class Interval4Screen:
         self.YELLOW = (255, 255, 0)
 
         # Defining fonts
-        self.small_font = pygame.font.Font("./level04/IMFellEnglish-Regular.ttf", 24)
-        self.x_small_font = pygame.font.Font("./level04/IMFellEnglish-Regular.ttf", 16)
+        self.small_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf",  24)
+        self.x_small_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 16)
 
         # Sounds
-        self.background_sound = pygame.mixer.Sound('./assets/sounds-effects/Alone at Twilight 5.wav')
-        self.click_sound = pygame.mixer.Sound('./level04/click-keyboard.mp3')
+        self.background_sound = pygame.mixer.Sound('assets/Alone at Twilight 5.wav')
+        self.click_sound = pygame.mixer.Sound('assets/click-keyboard.mp3')
         self.background_sound.set_volume(0.5)  # Define o volume para 50%
         self.background_sound.play()
 
@@ -103,8 +103,3 @@ class Interval4Screen:
 
         # Stop the background sound after exiting
         self.background_sound.stop()
-
-if __name__ == '__main__':
-    game = Interval4Screen()
-    game.run()
-    pygame.quit()

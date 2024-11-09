@@ -30,7 +30,7 @@ class HistoryScreen:
 
         # Sound effects
         self.background_sound = pygame.mixer.Sound('./assets/sounds-effects/Exploring Nightmare.wav')
-        self.click_sound = pygame.mixer.Sound('./level04/click-keyboard.mp3')
+        self.click_sound = pygame.mixer.Sound('assets/click-keyboard.mp3')
         self.background_sound.set_volume(0.6)
         self.background_sound.play()
 
@@ -116,8 +116,3 @@ class HistoryScreen:
 
         # Stop background sound when exiting
         self.background_sound.stop()
-
-if __name__ == '__main__':
-    tutorial_screen = HistoryScreen()
-    tutorial_screen.run()
-    pygame.quit()

@@ -19,8 +19,8 @@ game_screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Change from 'screen' t
 pygame.display.set_caption("Swamp of Souls")
 
 # Fonts
-title_font = pygame.font.Font("level04/IMFellEnglish-Regular.ttf", 75)
-small_font = pygame.font.Font("level04/IMFellEnglish-Regular.ttf", 26)
+title_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 75)
+small_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 26)
 
 # Background and images
 bg_image = pygame.image.load('assets/backgrounds/bg_menu.png').convert_alpha()
@@ -30,7 +30,7 @@ shadow_player = pygame.transform.scale(pygame.image.load('assets/objects/shadow.
 
 # Sounds
 background_sound = pygame.mixer.Sound('assets/sounds-effects/Alone at Twilight 5.wav')
-click_sound = pygame.mixer.Sound('level04/click-keyboard.mp3')
+click_sound = pygame.mixer.Sound('assets/click-keyboard.mp3')
 background_sound.set_volume(0.5)  # Volume 50%
 background_sound.play()
 
@@ -129,10 +129,3 @@ class SwampOfSoulsScreen:
                     self.running = False
 
             pygame.display.update()
-
-if __name__ == '__main__':
-    # Run the screen
-    screen = SwampOfSoulsScreen()
-    screen.run()
-
-    pygame.quit()

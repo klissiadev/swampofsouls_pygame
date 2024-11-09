@@ -22,8 +22,8 @@ RED = (100, 20, 0)
 
 # Defining fonts
 font = pygame.font.Font(None, 100)
-normal_font = pygame.font.Font("./level04/IMFellEnglish-Regular.ttf", 36)
-small_font = pygame.font.Font("./level04/IMFellEnglish-Regular.ttf", 30)
+normal_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 36)
+small_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 30)
 
 # Screen dimensions
 WIDTH, HEIGHT = 1320, 680
@@ -36,9 +36,9 @@ player = player_mod.Player(WIDTH/2 - 65, 370, "Right")
 moving_sprites.add(player)
 
 # players sounds
-background_sound = pygame.mixer.Sound('./level04/witch-forest-atmo-24654.mp3')
-bridge_stability_sound = pygame.mixer.Sound('./level04/wood-creaking.mp3')
-click_sound = pygame.mixer.Sound('./level04/click-keyboard.mp3')
+background_sound = pygame.mixer.Sound('assets/witch-forest-atmo-24654.mp3')
+bridge_stability_sound = pygame.mixer.Sound('assets/wood-creaking.mp3')
+click_sound = pygame.mixer.Sound('assets/click-keyboard.mp3')
 background_sound.set_volume(0.5)  # Define o volume para 50%
 background_sound.play()
 
@@ -46,8 +46,8 @@ background_sound.play()
 class LevelFourScreen:
     def __init__(self):
         self.running = True
-        self.background_image = pygame.image.load('./level04/background-sky.png').convert()
-        self.gameover_img = pygame.image.load('./level04/GAMEOVER4.png').convert()
+        self.background_image = pygame.image.load('assets/background-sky.png').convert()
+        self.gameover_img = pygame.image.load('assets/GAMEOVER4.png').convert()
         self.bg_w = self.background_image.get_width()
         self.tiles = math.ceil(WIDTH / self.bg_w) + 1
         self.scroll_bg = 0
@@ -61,7 +61,7 @@ class LevelFourScreen:
         self.bridge_stability = 100  # The percentage of stability of the bridge
         self.error_time = None  # Time when an error occurs
         self.error_color_duration = 0.4  # Duration in seconds to show the red color
-        self.moon = pygame.transform.scale(pygame.image.load('./assets/objects/moon.png').convert_alpha(), (102, 100))
+        self.moon = pygame.transform.scale(pygame.image.load('assets/objects/moon.png').convert_alpha(), (102, 100))
         self.plank_positions = [(i * 69, HEIGHT // 2 + 200) for i in range(self.total_planks)]
         self.player_position = [self.plank_positions[0][0], self.plank_positions[0][1] - 200]
 
@@ -138,16 +138,16 @@ class LevelFourScreen:
                 pygame.time.delay(20)
 
     def create_letter_row(self):
-        with open('level04/LetterRow.txt', 'r') as file:
+        with open('assets/LetterRow.txt', 'r') as file:
             letter_row = [line.rstrip('\n').replace("'", "") for line in file]
         return letter_row
 
     def draw_bridge(self, offset_x, stability_y):
         # Draw all bridge planks based on displacement
         for i in range(self.total_planks):
-            image = pygame.transform.scale(pygame.image.load('./level04/plank.png').convert_alpha(), (75, 123))
+            image = pygame.transform.scale(pygame.image.load('assets/plank.png').convert_alpha(), (75, 123))
             game_screen.blit(image, (self.plank_positions[i][0] + offset_x, self.plank_positions[i][1] + stability_y))
-        floor = pygame.transform.scale(pygame.image.load('./level04/floor.png').convert_alpha(), (320, 250))
+        floor = pygame.transform.scale(pygame.image.load('assets/floor.png').convert_alpha(), (320, 250))
         game_screen.blit(floor, (self.plank_positions[self.total_planks - 1][0] + offset_x + 75, self.plank_positions[self.total_planks - 1][1]))
 
 
@@ -269,11 +269,3 @@ class LevelFourScreen:
             moving_sprites.update(0.25)
             pygame.display.flip()
             pygame.display.update()
-
-# Example of how to run this screen
-if __name__ == '__main__':
-    level_two = LevelFourScreen()
-    level_two.run()
-    pygame.quit()
-
-

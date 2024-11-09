@@ -20,8 +20,8 @@ YELLOW = (255, 255, 0)
 FIREFLY_COLOR = (239,204,0)
 
 # Defining fonts
-small_font = pygame.font.Font("level04/IMFellEnglish-Regular.ttf", 24)
-x_small_font = pygame.font.Font("level04/IMFellEnglish-Regular.ttf", 16)
+small_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 24)
+x_small_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 16)
 
 # Screen dimensions
 WIDTH, HEIGHT = 1320, 680
@@ -29,12 +29,12 @@ game_screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Changed 'screen' to 'g
 pygame.display.set_caption("Interval - 02")
 
 # Background images
-bg_images = [pygame.image.load(f'level02/background/BG_{i}.png').convert_alpha() for i in range(2, 6)]
+bg_images = [pygame.image.load(f'assets/background/BG_{i}.png').convert_alpha() for i in range(2, 6)]
 bg_width = bg_images[0].get_width()
 
 # Players sounds
 background_sound = pygame.mixer.Sound('assets/sounds-effects/Alone at Twilight 5.wav')
-click_sound = pygame.mixer.Sound('level04/click-keyboard.mp3')
+click_sound = pygame.mixer.Sound('assets/click-keyboard.mp3')
 background_sound.set_volume(0.5)  # Set volume to 50%
 background_sound.play()
 
@@ -104,7 +104,7 @@ class IntervalScreen:
 
 
     def draw_background(self):
-        static_bg_image = pygame.image.load(f'./level02/background/BG_1.png').convert_alpha()
+        static_bg_image = pygame.image.load(f'assets/background/BG_1.png').convert_alpha()
         game_screen.blit(static_bg_image, (0, 0))
 
         for x in range(6):
@@ -189,8 +189,3 @@ class IntervalScreen:
             game_screen.blit(tip_text, (50, HEIGHT - 60))
 
             pygame.display.update()
-
-if __name__ == '__main__':
-    screen = IntervalScreen()
-    screen.run()
-    pygame.quit()

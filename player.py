@@ -12,15 +12,15 @@ class Player(pygame.sprite.Sprite):
 
         # Load walking sprites
         for i in range(1, 9):
-            sprite = pygame.image.load(f'./level02/sprites/walking/ALMA_WALKING{i}.png').convert_alpha()
+            sprite = pygame.image.load(f'assets/walking/ALMA_WALKING{i}.png').convert_alpha()
             self.sprites.append(sprite)
 
         # Load idle and jar-holding sprites separately
-        self.idle_sprite = pygame.image.load('./level02/sprites/idle/ALMA.png').convert_alpha()
-        self.holding_jar_sprite = pygame.image.load('./level01/alma/ALMA_WITH_JAR.png').convert_alpha()
+        self.idle_sprite = pygame.image.load('assets/idle/ALMA.png').convert_alpha()
+        self.holding_jar_sprite = pygame.image.load('assets/alma/ALMA_WITH_JAR.png').convert_alpha()
 
         # Load the catching sprite
-        self.catching_sprite = pygame.image.load('./level01/alma/ALMA_WITH_JAR_FULL.png').convert_alpha()
+        self.catching_sprite = pygame.image.load('assets/alma/ALMA_WITH_JAR_FULL.png').convert_alpha()
         self.isCatching = False  # Track if player is in catching state
 
         self.current_sprite = 0

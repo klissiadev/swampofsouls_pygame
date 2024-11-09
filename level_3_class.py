@@ -15,7 +15,7 @@ class Block:
         self.letter = letter
         self.is_seeing = True
         self.incorrect = False
-        self.image = pygame.image.load('level03/Group 29 (1).png').convert_alpha()
+        self.image = pygame.image.load('assets/Group 29 (1).png').convert_alpha()
         self.total_blocks = 10
         self.blocks_positions = [(i * 69, height // 2) for i in range(self.total_blocks)]
 
@@ -35,7 +35,7 @@ class Block:
         self.rect.topleft = (x, y)
         self.letter = letter
         self.is_seeing = True
-        self.image = pygame.image.load('level03/Group 29 (1).png').convert_alpha()
+        self.image = pygame.image.load('assets/Group 29 (1).png').convert_alpha()
 
 
 class Camera:

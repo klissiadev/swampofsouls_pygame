@@ -14,8 +14,8 @@ WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 
 # Defining fonts
-small_font = pygame.font.Font("./level04/IMFellEnglish-Regular.ttf", 24)
-x_small_font = pygame.font.Font("./level04/IMFellEnglish-Regular.ttf", 16)
+small_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 24)
+x_small_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 16)
 
 # Screen dimensions
 WIDTH, HEIGHT = 1320, 680
@@ -30,16 +30,16 @@ class Interval3Screen:
         self.player = player_mod.Player(40, 370, "Right")
         self.moving_sprites.add(self.player)
         self.player_position = [40, 370]
-        self.bg_image = [pygame.image.load(f'./level02/background/BG_{i}.png').convert_alpha() for i in range(2, 6)]
+        self.bg_image = [pygame.image.load(f'assets/background/BG_{i}.png').convert_alpha() for i in range(2, 6)]
         self.bg_width = self.bg_image[0].get_width()
 
         self.background_sound = pygame.mixer.Sound('./assets/sounds-effects/Alone at Twilight 5.wav')
-        self.click_sound = pygame.mixer.Sound('./level04/click-keyboard.mp3')
+        self.click_sound = pygame.mixer.Sound('assets/click-keyboard.mp3')
         self.background_sound.set_volume(0.5)  # Define o volume para 50%
         self.background_sound.play()
 
         # thorns
-        self.thorns = pygame.transform.scale(pygame.image.load('./level03/Group 29 (1).png').convert_alpha(), (280, 280))
+        self.thorns = pygame.transform.scale(pygame.image.load('assets/Group 29 (1).png').convert_alpha(), (280, 280))
         self.thorns_positions = [WIDTH + 100, HEIGHT - 350]
 
         # Opacity for fade effect
@@ -55,7 +55,7 @@ class Interval3Screen:
             self.opacity -= self.fade_speed  # Reduce opacity to create fade-out effect
 
     def drawBackground(self):
-        static_bg_image = pygame.image.load(f'./level02/background/BG_1.png').convert_alpha()
+        static_bg_image = pygame.image.load(f'assets/background/BG_1.png').convert_alpha()
         screen.blit(static_bg_image, (0, 0))
 
         for x in range(6):
@@ -132,9 +132,3 @@ class Interval3Screen:
 
             self.darken_screen()
             pygame.display.update()
-
-
-if __name__ == '__main__':
-    interval_screen = Interval3Screen()
-    interval_screen.run()
-    pygame.quit()

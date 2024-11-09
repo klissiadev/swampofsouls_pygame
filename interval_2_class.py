@@ -2,7 +2,6 @@ import sys
 
 import pygame
 import player as player_mod
-from classes.level_2_class import LevelTwoScreen
 
 # Initializing Pygame
 pygame.init()
@@ -18,21 +17,19 @@ YELLOW = (255, 255, 0)
 GREY = (168, 168, 168)
 
 # Defining fonts
-small_font = pygame.font.Font("./level04/IMFellEnglish-Regular.ttf", 24)
-x_small_font = pygame.font.Font("./level04/IMFellEnglish-Regular.ttf", 16)
+small_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 24)
+x_small_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 16)
 
 # Screen dimensions
 WIDTH, HEIGHT = 1320, 680
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Interval - 02")
-background_sound = pygame.mixer.Sound('./level03/Alone at Twilight 5.wav')
+background_sound = pygame.mixer.Sound('assets/Alone at Twilight 5.wav')
 background_sound.set_volume(0.5)
 background_sound.play()
-click_sound = pygame.mixer.Sound('level04/click-keyboard.mp3')
+click_sound = pygame.mixer.Sound('assets/click-keyboard.mp3')
 
 scroll = 0
-
-
 
 class Interval2Screen:
     def __init__(self):
@@ -41,11 +38,11 @@ class Interval2Screen:
         self.player = player_mod.Player(40, 370, "Right")
         self.moving_sprites.add(self.player)
         self.player_position = [40, 370]
-        self.bg_image = [pygame.image.load(f'./level02/background/BG_{i}.png').convert_alpha() for i in range(2, 6)]
+        self.bg_image = [pygame.image.load(f'assets/background/BG_{i}.png').convert_alpha() for i in range(2, 6)]
         self.bg_width = self.bg_image[0].get_width()
 
         self.background_sound = pygame.mixer.Sound('./assets/sounds-effects/Alone at Twilight 5.wav')
-        self.click_sound = pygame.mixer.Sound('./level04/click-keyboard.mp3')
+        self.click_sound = pygame.mixer.Sound('assets/click-keyboard.mp3')
         self.background_sound.set_volume(0.5)  # Define o volume para 50%
         self.background_sound.play()
 
@@ -61,7 +58,7 @@ class Interval2Screen:
         screen.blit(dark_overlay, (0, 0))
 
     def drawBackground(self):
-            static_bg_image = pygame.image.load(f'./level02/background/BG_1.png').convert_alpha()
+            static_bg_image = pygame.image.load(f'assets/background/BG_1.png').convert_alpha()
             screen.blit(static_bg_image, (0, 0))
 
             for x in range(6):
@@ -138,9 +135,3 @@ class Interval2Screen:
                 screen.blit(tip_text, (50, HEIGHT - 60))
                 self.darken_screen()
                 pygame.display.update()
-
-
-if __name__ == '__main__':
-    interval_screen = Interval2Screen()
-    interval_screen.run()
-    pygame.quit()

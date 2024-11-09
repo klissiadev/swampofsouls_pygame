@@ -1,16 +1,16 @@
 import pygame
 
 from ComingSoonScreen import ComingSoonScreen
-from classes.menu_class import SwampOfSoulsScreen
-from classes.interval_1_class import IntervalScreen
-from classes.interval_2_class import Interval2Screen
-from classes.interval_3_class import Interval3Screen
+from menu_class import SwampOfSoulsScreen
+from interval_1_class import IntervalScreen
+from interval_2_class import Interval2Screen
+from interval_3_class import Interval3Screen
 from interval4 import Interval4Screen
 from tutorial1 import Tutorial1Screen
 from tutorial2 import Tutorial2Screen
 from tutorial3 import Tutorial3Screen
 from tutorial4 import Tutorial4Screen
-from classes.level_2_class import LevelTwoScreen
+from level_2_class import LevelTwoScreen
 from level1 import LevelOneScreen
 from level3 import LevelThreeOnScreen
 from level_4_class import LevelFourScreen

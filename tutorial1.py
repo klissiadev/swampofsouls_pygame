@@ -16,11 +16,11 @@ class Tutorial1Screen:
         pygame.display.set_caption("Swamp of Souls")
 
         # Background and images
-        self.bg_image = pygame.image.load('./assets/tutorials/TUTORIAL1.png').convert_alpha()
+        self.bg_image = pygame.image.load('assets/tutorials/TUTORIAL1.png').convert_alpha()
 
         # Sounds
-        self.background_sound = pygame.mixer.Sound('./assets/sounds-effects/Alone at Twilight 5.wav')
-        self.click_sound = pygame.mixer.Sound('./level04/click-keyboard.mp3')
+        self.background_sound = pygame.mixer.Sound('assets/sounds-effects/Alone at Twilight 5.wav')
+        self.click_sound = pygame.mixer.Sound('assets/click-keyboard.mp3')
         self.background_sound.set_volume(0.2)
         self.background_sound.play()
 
@@ -45,8 +45,3 @@ class Tutorial1Screen:
                     running = False
 
             pygame.display.update()
-
-if __name__ == '__main__':
-    tutorial_screen = Tutorial1Screen()
-    tutorial_screen.run()
-    pygame.quit()

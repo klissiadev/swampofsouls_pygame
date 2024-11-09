@@ -2,8 +2,8 @@ import pygame
 import random
 import time
 import player as player_mod
-from classes.level_3_class import Block
-from classes.level_3_class import Camera
+from level_3_class import Block
+from level_3_class import Camera
 
 pygame.init()
 
@@ -15,23 +15,23 @@ clock = pygame.time.Clock()
 FPS = 60
 
 # background
-bg1 = pygame.image.load('level03/Group 68.png')
+bg1 = pygame.image.load('assets/Group 68.png')
 bg1 = pygame.transform.scale(bg1, (width, height))
-background_sound = pygame.mixer.Sound('level03/Alone at Twilight 5.wav')
+background_sound = pygame.mixer.Sound('assets/Alone at Twilight 5.wav')
 background_sound.set_volume(0.5)
 background_sound.play()
 
-game_over_background = pygame.image.load('level03/GAMEOVER3.png')
+game_over_background = pygame.image.load('assets/GAMEOVER3.png')
 
 # blocks
-block_image = pygame.image.load('level03/Group 29 (1).png').convert_alpha()
+block_image = pygame.image.load('assets/Group 29 (1).png').convert_alpha()
 block_rect = block_image.get_rect(topleft=(250, 600))
-block_sound = pygame.mixer.Sound('level03/walk-in-dry-leaves-in-the-forest-22431_JTzeMuNJ.mp3')
+block_sound = pygame.mixer.Sound('assets/walk-in-dry-leaves-in-the-forest-22431_JTzeMuNJ.mp3')
 block_sound.set_volume(0.2)
 
 # random variables
 scroll = 0
-normal_font = pygame.font.Font('level04/IMFellEnglish-Regular.ttf', 40)
+normal_font = pygame.font.Font('assets/IMFellEnglish-Regular.ttf', 40)
 font = pygame.font.Font(None, 50)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -45,7 +45,7 @@ class LevelThreeOnScreen:
         self.player = player_mod.Player(40, 370, "Right")
         self.moving_sprites.add(self.player)
         self.player_position = [40, 370]
-        self.bg_images = [pygame.image.load(f'./level02/background/BG_{i}.png').convert_alpha() for i in range(2, 6)]
+        self.bg_images = [pygame.image.load(f'assets/background/BG_{i}.png').convert_alpha() for i in range(2, 6)]
         self.bg_width = self.bg_images[0].get_width()
         self.camera = Camera(width, height)
         self.blocks = self.create_blocks(200, height // 2)
@@ -69,7 +69,7 @@ class LevelThreeOnScreen:
             self.opacity -= self.fade_speed  # Reduce opacity to create fade-out effect
 
     def drawBackground(self, bg_images):
-        static_bg_image = pygame.image.load(f'./level02/background/BG_1.png').convert_alpha()
+        static_bg_image = pygame.image.load(f'assets/background/BG_1.png').convert_alpha()
         screen.blit(static_bg_image, (0, 0))
 
         for x in range(6):
@@ -191,8 +191,3 @@ class LevelThreeOnScreen:
             self.darken_screen()
             self.moving_sprites.update(0.25)
             pygame.display.update()
-
-if __name__ == "__main__":
-    level_three_screen = LevelThreeOnScreen()
-    level_three_screen.run()
-    pygame.quit()
