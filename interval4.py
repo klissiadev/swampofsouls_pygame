@@ -15,11 +15,11 @@ pygame.display.set_caption("Swamp of Souls")
 frame1 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 4.png').convert_alpha(),(1320,680))
 frame2 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 4-1.png').convert_alpha(),(1320,680))
 frame3 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 4-2.png').convert_alpha(),(1320,680))
-frame4 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 4-3.png').convert_alpha(),(1320,680))
+frame8 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 4-3.png').convert_alpha(),(1320,680))
 frame5 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 4-4.png').convert_alpha(),(1320,680))
 frame6 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 4-5.png').convert_alpha(),(1320,680))
 frame7 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 4-6.png').convert_alpha(),(1320,680))
-frame8 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 4-7.png').convert_alpha(),(1320,680))
+frame4 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 4-7.png').convert_alpha(),(1320,680))
 
 class Interval4Screen:
     def __init__(self):
@@ -130,9 +130,10 @@ class Interval4Screen:
         pygame.display.update()
         time.sleep(2)  # Pausa por 2 segundos
         screen.fill(self.WHITE)
+        '''
         screen.blit(frame8, (0, 0))
         pygame.display.update()
-        time.sleep(2)
+        time.sleep(2)'''
 
     def run(self):
         running = True

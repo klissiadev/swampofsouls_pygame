@@ -33,6 +33,7 @@ moving_sprites.add(player)
 
 # Fonte e frases
 font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 28)
+s_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 16)
 phrases = ["Os dias naquela cabana eram interminaveis, e sua presença era tudo o que eu conhecia.", "Nao foi minha culpa, era o que precisava ser feito.",
            "Nos eramos iguais em tudo, mesmas manias, mesmos sorrisos, mesma dor, mesma fome...", "E no fim, tudo fazia sentido...", "Eu nunca a deixei partir; talvez, na escuridao, eu apenas tenha permitido que algo a mais tomasse meu lugar..."]
 
@@ -44,6 +45,11 @@ wendigo_image = pygame.transform.scale(pygame.image.load(
 background_sound = pygame.mixer.Sound('assets/sounds-effects/Close Encounter 1.wav')
 background_sound.set_volume(0.7)
 background_sound.play(loops=-1)
+
+preframe1 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 5.png').convert_alpha(),(1320,680))
+preframe2 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 5-1.png.').convert_alpha(),(1320,680))
+preframe3 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 5-2.png').convert_alpha(),(1320,680))
+preframe4 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 5-3.png').convert_alpha(),(1320,680))
 
 frame1 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 5 - POS.png').convert_alpha(),(1320,680))
 frame2 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 5 - POS-1.png').convert_alpha(),(1320,680))
@@ -139,6 +145,24 @@ class LevelFiveOnScreen:
         pygame.display.update()
         time.sleep(2)
 
+    def show_pre_frames_screen(self):
+        screen.fill(WHITE)
+        screen.blit(preframe1, (-10, 0))
+        pygame.display.update()
+        time.sleep(3)  # Pausa por 2 segundos
+        screen.fill(WHITE)
+        screen.blit(preframe2, (-10, 0))
+        pygame.display.update()
+        time.sleep(3)
+        screen.fill(WHITE)
+        screen.blit(preframe3, (-10, 0))
+        pygame.display.update()
+        time.sleep(3)
+        screen.fill(WHITE)
+        screen.blit(preframe4, (-10, 0))
+        pygame.display.update()
+        time.sleep(3)
+
     def flash_screen(self):
         screen.fill(WHITE)
         pygame.display.flip()
@@ -167,7 +191,8 @@ class LevelFiveOnScreen:
 
             # Verifica limite de tempo para digitar uma letra
             if time.time() - self.typing_start_time > self.typing_duration_limit:
-                self.errors += self.max_errors + 1
+                self.enemy_approach_count += 1
+                self.flash_screen()
                 self.typing_start_time = time.time()
 
 
@@ -180,6 +205,7 @@ class LevelFiveOnScreen:
 
     def run(self):
         self.running = True
+        self.show_pre_frames_screen()
         while self.running:
             player.animate()
             screen.fill(WHITE)
@@ -253,6 +279,9 @@ class LevelFiveOnScreen:
             level_text = font.render(f"Level 5", True, WHITE)
             screen.blit(level_text, (600, 10))
 
+            plank_text = s_font.render(f'Talvez repetindo, as memórias façam mais sentido...', True, WHITE)
+            screen.blit(plank_text, (150, 50))
+
             if player.isAnimating:
                 self.scroll += 3
             if abs(self.scroll) > bg_width:
@@ -266,6 +295,3 @@ class LevelFiveOnScreen:
             pygame.display.update()
             pygame.display.flip()
             pygame.time.Clock().tick(30)
-
-main = LevelFiveOnScreen()
-main.run()
