@@ -2,15 +2,18 @@ import pygame
 
 from ComingSoonScreen import ComingSoonScreen
 from menu_class import SwampOfSoulsScreen
-from interval_1_class import IntervalScreen
-from interval_2_class import Interval2Screen
-from interval_3_class import Interval3Screen
+from interval1 import IntervalScreen
+from interval2 import Interval2Screen
+from interval3 import Interval3Screen
 from interval4 import Interval4Screen
-from level_2_class import LevelTwoScreen
+from level2 import LevelTwoScreen
 from level1 import LevelOneScreen
 from level3 import LevelThreeOnScreen
-from level_4_class import LevelFourScreen
+from level4 import LevelFourScreen
+from level5 import LevelFiveOnScreen
 from history import HistoryScreen
+from history_level2_1 import History2Screen
+from history_level2_2 import History22Screen
 
 # Inicializar o pygame
 pygame.init()
@@ -40,8 +43,14 @@ def main():
     game_screen = Interval2Screen()
     game_screen.run()
 
+    history = History2Screen()
+    history.run()
+
     level_screen = LevelTwoScreen()
     level_screen.run()
+
+    history = History22Screen()
+    history.run()
 
     game_screen = Interval3Screen()
     game_screen.run()
@@ -53,6 +62,9 @@ def main():
     game_screen.run()
 
     level_screen = LevelFourScreen()
+    level_screen.run()
+
+    level_screen = LevelFiveOnScreen()
     level_screen.run()
 
     history_screen = ComingSoonScreen()

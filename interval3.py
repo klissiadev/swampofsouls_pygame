@@ -1,5 +1,7 @@
+import time
 import pygame
 import player as player_mod
+from menu_class import click_sound
 
 # Initializing Pygame
 pygame.init()
@@ -20,7 +22,11 @@ x_small_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 16)
 # Screen dimensions
 WIDTH, HEIGHT = 1320, 680
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Interval - 03")
+pygame.display.set_caption("Swamp of Souls")
+
+frame1 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 3.png').convert_alpha(),(1320,680))
+frame2 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 3-1.png').convert_alpha(),(1320,680))
+frame3 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 3-2.png').convert_alpha(),(1320,680))
 
 
 class Interval3Screen:
@@ -64,12 +70,23 @@ class Interval3Screen:
                 screen.blit(l, ((x * self.bg_width) - self.scroll * speed, 0))
                 speed += 0.6
 
+    def show_frames_screen(self):
+        screen.fill(WHITE)
+        screen.blit(frame1, (-10, 0))
+        pygame.display.update()
+        time.sleep(2)  # Pausa por 2 segundos
+        screen.fill(WHITE)
+        screen.blit(frame2, (-10, 0))
+        pygame.display.update()
+        time.sleep(2)
+        screen.fill(WHITE)
+        screen.blit(frame3, (-10, 0))
+        pygame.display.update()
+        time.sleep(3)
 
 # Game loop
     def run(self):
-
         running = True
-
         while running:
             screen.fill(WHITE)
 
@@ -85,6 +102,7 @@ class Interval3Screen:
                 if event.type == pygame.KEYDOWN:
                     if event.unicode.upper() == 'E':
                         self.click_sound.play()
+                        self.show_frames_screen()
                         running = False
 
             keys = pygame.key.get_pressed()
@@ -120,14 +138,14 @@ class Interval3Screen:
             screen.blit(self.thorns, (self.thorns_positions[0], self.thorns_positions[1]))
 
             if abs((self.player_position[0] + 36) - self.thorns_positions[0]) < 70:
-                press_e_text = x_small_font.render(f'Press E', True, WHITE)
+                press_e_text = x_small_font.render(f'Pressione E', True, WHITE)
                 screen.blit(press_e_text, (self.thorns_positions[0] + 120, self.thorns_positions[1] - 60))
-                tip_text = small_font.render(f'For god''s sake! Something is blocking the passage...', True, WHITE)
+                tip_text = small_font.render(f'Espinhos??!...', True, WHITE)
                 screen.blit(tip_text, (400, HEIGHT - 200))
                 pygame.display.update()
 
             # Draw the tip
-            tip_text = small_font.render(f'Where am i supposed to go...?', True, WHITE)
+            tip_text = small_font.render(f'Isso está muito estranho, e ao mesmo tempo muito familiar...', True, WHITE)
             screen.blit(tip_text, (50, HEIGHT - 60))
 
             self.darken_screen()

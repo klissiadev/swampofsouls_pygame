@@ -22,13 +22,14 @@ RED = (100, 20, 0)
 # Defining fonts
 font = pygame.font.Font(None, 74)
 small_font = pygame.font.Font(None, 36)
+normal_font = pygame.font.Font('assets/IMFellEnglish-Regular.ttf', 24)
 last_letter_position = 0
 last_letter = 0
 
 # Screen dimensions
 WIDTH, HEIGHT = 1320, 680
 game_screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Swamp of Souls - Fase 02")
+pygame.display.set_caption("Swamp of Souls")
 
 # Background and images
 bg_images = []
@@ -95,6 +96,12 @@ class LevelTwoScreen:
                 game_screen.blit(layer, ((x * bg_width) - self.scroll * speed, 0))
                 speed += 0.6
 
+    def show_game_over_screen(self):
+        # Exibe a tela de Game Over
+        game_screen.blit(game_over_background, (0, 0))
+        pygame.display.update()
+        time.sleep(3)  # Pausa por 3 segundos
+
     def lower_opacity(self):
         if self.opacity >= 0:
             self.opacity -= int(self.opacity_value)
@@ -120,7 +127,7 @@ class LevelTwoScreen:
             text = font.render(letter, True, self.letter_color)
             text.set_alpha(self.opacity)
             image = pygame.transform.scale(pygame.image.load(
-                'assets/solo_assets/Animal Footstep.png').convert_alpha(), (50, 50))
+                './assets/objects/Animal Footstep.png').convert_alpha(), (50, 50))
             image.set_alpha(self.opacity)
             game_screen.blit(text, (x, y))
 
@@ -137,13 +144,14 @@ class LevelTwoScreen:
                 self.last_letter_position = x
 
     def run(self):
-
         self.running = True
-
         while self.running:
             game_screen.fill(WHITE)
             clock.tick(FPS)
             self.draw_background()
+
+            level_text = normal_font.render(f"Level 3", True, WHITE)
+            game_screen.blit(level_text, (600, 10))
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -183,6 +191,7 @@ class LevelTwoScreen:
                 game_screen.blit(image_letter,(30,30))
 
             if self.opacity <= 0:
+                self.show_game_over_screen()
                 self.running = False
             elif len(self.letter_row) <= 0:
                 self.running = False

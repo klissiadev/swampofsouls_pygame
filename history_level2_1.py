@@ -2,7 +2,7 @@ import pygame
 import sys
 from ffpyplayer.player import MediaPlayer
 
-class HistoryScreen:
+class History2Screen:
     def __init__(self):
         # Inicializa Pygame
         pygame.init()
@@ -17,7 +17,7 @@ class HistoryScreen:
         pygame.display.set_caption("Swamp of Souls")
 
         # Carrega o vídeo sem áudio para evitar conflitos
-        self.video_path = './assets/videos/intro.mp4'
+        self.video_path = './assets/videos/intervalo2.mp4'
         self.player = MediaPlayer(self.video_path, ff_opts={'an': True})
 
     # Função para obter o frame atual do vídeo

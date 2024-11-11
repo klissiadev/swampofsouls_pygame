@@ -33,9 +33,8 @@ moving_sprites.add(player)
 
 # Fonte e frases
 font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 28)
-phrases = ["Nao foi minha culpa... Nao foi eu, nao foi minha culpa, nao foi minha culpa", "o vilao esta te alcançando",
-           "digite corretamente para fugir", "nao deixe o medo te parar",
-           "continue fugindo e digite", "voce esta quase escapando"]
+phrases = ["Os dias naquela cabana eram interminaveis, e sua presença era tudo o que eu conhecia.", "Nao foi minha culpa, era o que precisava ser feito.",
+           "Nos eramos iguais em tudo, mesmas manias, mesmos sorrisos, mesma dor, mesma fome...", "E no fim, tudo fazia sentido...", "Eu nunca a deixei partir; talvez, na escuridao, eu apenas tenha permitido que algo a mais tomasse meu lugar..."]
 
 wendigo_image = pygame.transform.scale(pygame.image.load(
     f'./assets/wendigo.png').convert_alpha(),
@@ -43,9 +42,14 @@ wendigo_image = pygame.transform.scale(pygame.image.load(
 
 # Sounds
 background_sound = pygame.mixer.Sound('assets/sounds-effects/Close Encounter 1.wav')
-click_sound = pygame.mixer.Sound('assets/click-keyboard.mp3')
-background_sound.set_volume(0.5)
-background_sound.play()
+background_sound.set_volume(0.7)
+background_sound.play(loops=-1)
+
+frame1 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 5 - POS.png').convert_alpha(),(1320,680))
+frame2 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 5 - POS-1.png').convert_alpha(),(1320,680))
+frame3 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 5 - POS-2.png').convert_alpha(),(1320,680))
+frame4 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 5 - POS-3.png').convert_alpha(),(1320,680))
+frame5 = pygame.transform.scale(pygame.image.load('assets/backgrounds/FASE 5 - POS-4.png').convert_alpha(),(1320,680))
 
 
 class LevelFiveOnScreen:
@@ -107,11 +111,33 @@ class LevelFiveOnScreen:
         screen.blit(surface, (x, y))
 
     def show_interval_bar(self):
-        elapsed = time.time() - self.interval_start_time
-        if elapsed >= self.interval_duration:
+        self.elapsed = time.time() - self.interval_start_time
+        if self.elapsed >= self.interval_duration:
             return False
-        pygame.draw.rect(screen, GRAY, [100, 300, (elapsed / self.interval_duration) * 1100, 20])
+        pygame.draw.rect(screen, GRAY, [100, 300, (self.elapsed / self.interval_duration) * 1100, 20])
         return True
+
+    def show_pos_frames_screen(self):
+        screen.fill(WHITE)
+        screen.blit(frame1, (0, 0))
+        pygame.display.update()
+        time.sleep(3)  # Pausa por 2 segundos
+        screen.fill(WHITE)
+        screen.blit(frame2, (0, 0))
+        pygame.display.update()
+        time.sleep(3)
+        screen.fill(WHITE)
+        screen.blit(frame3, (0, 0))
+        pygame.display.update()
+        time.sleep(3)
+        screen.fill(WHITE)
+        screen.blit(frame4, (0, 0))
+        pygame.display.update()
+        time.sleep(3)  # Pausa por 2 segundos
+        screen.fill(WHITE)
+        screen.blit(frame5, (0, 0))
+        pygame.display.update()
+        time.sleep(2)
 
     def flash_screen(self):
         screen.fill(WHITE)
@@ -142,6 +168,8 @@ class LevelFiveOnScreen:
             # Verifica limite de tempo para digitar uma letra
             if time.time() - self.typing_start_time > self.typing_duration_limit:
                 self.errors += self.max_errors + 1
+                self.typing_start_time = time.time()
+
 
             # Aproxima o inimigo se erros ultrapassarem o limite
             if self.errors > self.max_errors:
@@ -150,7 +178,7 @@ class LevelFiveOnScreen:
                 self.typing_start_time = time.time()
                 self.flash_screen()  # Chama o flash toda vez que o Wendigo se aproxima
 
-    def main_loop(self):
+    def run(self):
         self.running = True
         while self.running:
             player.animate()
@@ -185,13 +213,13 @@ class LevelFiveOnScreen:
                 # Renderiza o texto digitado com cores indicativas
                 for i, char in enumerate(self.typed_text):
                     color = GREEN if char == phrases[self.current_phrase_index][i] else RED
-                    self.render_text(char, color, 250 + i * 15, 250)
+                    self.render_text(char, color, 250 + i * 12, 250)
 
                 # Passa para a próxima frase ao alcançar o final da frase atual
                 if len(self.typed_text) == len(phrases[self.current_phrase_index]):
                     self.current_phrase_index += 1
                     if self.current_phrase_index >= len(phrases):
-                        self.running = False
+                        self.show_pos_frames_screen()
                     else:
                         self.interval_start_time = time.time()
                         self.start_typing()
@@ -207,6 +235,7 @@ class LevelFiveOnScreen:
 
             # Checa se o inimigo alcançou o jogador
             if self.enemy_approach_count >= self.max_approach:
+                self.show_pos_frames_screen()
                 self.running = False
 
             try:
@@ -220,6 +249,9 @@ class LevelFiveOnScreen:
                 image_letter.fill((255, 0, 0))  # Imagem em vermelho para indicar erro
 
             screen.blit(image_letter, (30, 30))
+
+            level_text = font.render(f"Level 5", True, WHITE)
+            screen.blit(level_text, (600, 10))
 
             if player.isAnimating:
                 self.scroll += 3
@@ -235,7 +267,5 @@ class LevelFiveOnScreen:
             pygame.display.flip()
             pygame.time.Clock().tick(30)
 
-
-# Inicializa e inicia o jogo
-game = LevelFiveOnScreen()
-game.main_loop()
+main = LevelFiveOnScreen()
+main.run()

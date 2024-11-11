@@ -17,6 +17,7 @@ FPS = 60
 BLACK = (0, 0, 0)
 WHITE = (185, 185, 185)
 YELLOW = (255, 255, 0)
+GRAY = (128, 128, 128)
 FIREFLY_COLOR = (239,204,0)
 
 # Defining fonts
@@ -26,7 +27,7 @@ x_small_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 16)
 # Screen dimensions
 WIDTH, HEIGHT = 1320, 680
 game_screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Changed 'screen' to 'game_screen'
-pygame.display.set_caption("Interval - 02")
+pygame.display.set_caption("Swamp of Souls")
 
 # Background images
 bg_images = [pygame.image.load(f'assets/background/BG_{i}.png').convert_alpha() for i in range(2, 6)]
@@ -181,11 +182,11 @@ class IntervalScreen:
 
             # Interaction hint
             if abs((self.player_position[0] + 36) - jar_positions[0]) < 70:
-                press_e_text = x_small_font.render(f'Press E to grab the glass', True, WHITE)
+                press_e_text = x_small_font.render(f'Pressione E para pegar a jarra', True, WHITE)
                 game_screen.blit(press_e_text, (jar_positions[0] + 5, jar_positions[1] - 60))
 
             # Draw the tip
-            tip_text = small_font.render(f'Look for some lighting...', True, WHITE)
-            game_screen.blit(tip_text, (50, HEIGHT - 60))
+            text = small_font.render(f'Aqui é muito escuro...Como posso iluminar meu caminho?', True, WHITE)
+            game_screen.blit(text, (50, HEIGHT - 60))
 
             pygame.display.update()

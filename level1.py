@@ -2,7 +2,7 @@ import sys
 
 import pygame
 import player as player_mod
-from interval_1_class import Firefly
+from interval1 import Firefly
 # Initializing Pygame
 pygame.init()
 
@@ -22,7 +22,7 @@ x_small_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 16)
 # Screen dimensions
 WIDTH, HEIGHT = 1320, 680
 game_screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Changed 'screen' to 'game_screen'
-pygame.display.set_caption("Level - 01")
+pygame.display.set_caption("Swamp of Souls")
 
 # Background images
 bg_images = [pygame.image.load(f'assets/background/BG_{i}.png').convert_alpha() for i in range(2, 6)]

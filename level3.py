@@ -36,6 +36,7 @@ font = pygame.font.Font(None, 50)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
+GRAY = (200,200,200)
 margin = 200
 
 class LevelThreeOnScreen:
@@ -112,7 +113,7 @@ class LevelThreeOnScreen:
 
     def run(self):
         running = True
-        time_limit = 8
+        time_limit = 5
         self.reset_game()
 
         while running:
@@ -133,7 +134,8 @@ class LevelThreeOnScreen:
 
                     for block in self.blocks:
                         if block.is_seeing and block.letter == letter_is_pressed:
-                            if block.rect.x > self.player_position[0] or abs(block.rect.x - self.player_position[0]) < 10:
+                            if block.rect.x > self.player_position[0] or abs(
+                                    block.rect.x - self.player_position[0]) < 10:
                                 block.is_seeing = False
                                 self.player.rect.midbottom = (block.rect.centerx, block.rect.top)
                                 block_found = True
@@ -174,7 +176,7 @@ class LevelThreeOnScreen:
 
             screen.blit(self.player.image, (self.player_position[0], self.player_position[1]))
 
-            score_text = normal_font.render(f"Perdido em:  {self.out_of_the_way}%", True, WHITE)
+            score_text = normal_font.render(f"Perdida em:  {self.out_of_the_way}%", True, WHITE)
             screen.blit(score_text, (180, 30))
 
             erros_text = normal_font.render(f"Erros: {self.errors}", True, WHITE)
@@ -190,4 +192,9 @@ class LevelThreeOnScreen:
 
             self.darken_screen()
             self.moving_sprites.update(0.25)
+
+            # Barra de tempo na parte inferior esquerda
+            time_bar_width = int(100 * max(0, (time_limit - elapsed_time) / time_limit))
+            pygame.draw.rect(screen, GRAY, (10, height - 90, time_bar_width, 20))  # Barra de tempo
+
             pygame.display.update()

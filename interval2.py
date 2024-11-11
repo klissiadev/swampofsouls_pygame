@@ -23,7 +23,7 @@ x_small_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 16)
 # Screen dimensions
 WIDTH, HEIGHT = 1320, 680
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Interval - 02")
+pygame.display.set_caption("Swamp of Souls")
 background_sound = pygame.mixer.Sound('assets/Alone at Twilight 5.wav')
 background_sound.set_volume(0.5)
 background_sound.play()
@@ -68,9 +68,7 @@ class Interval2Screen:
                     speed += 0.6
 
     def run(self):
-
             running = True
-
             while running:
                 screen.fill(WHITE)
 
@@ -123,15 +121,14 @@ class Interval2Screen:
                 screen.blit(self.animal_foot, (self.foot_positions[0], self.foot_positions[1]))
 
                 if abs((self.player_position[0] + 36) - self.foot_positions[0]) < 70:
-                    press_e_text = x_small_font.render(f'Press E', True, WHITE)
+                    press_e_text = x_small_font.render(f'Pressione E', True, WHITE)
                     screen.blit(press_e_text, (self.foot_positions[0] + 10 , HEIGHT - 35))
-                    tip_text = small_font.render(f"Oh...? Animal's footsteps...", True, WHITE)
+                    tip_text = small_font.render(f"Oh...? Pegadas de um animal...", True, WHITE)
                     screen.blit(tip_text, (400, HEIGHT - 200))
-                    pygame.display.update()
 
 
                 # Draw the tip
-                tip_text = small_font.render(f'Finally some light...', True, WHITE)
+                tip_text = small_font.render(f'Agora está mais claro, mas ainda preciso achar uma saída...', True, WHITE)
                 screen.blit(tip_text, (50, HEIGHT - 60))
                 self.darken_screen()
                 pygame.display.update()

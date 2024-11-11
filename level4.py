@@ -28,7 +28,7 @@ small_font = pygame.font.Font("assets/IMFellEnglish-Regular.ttf", 24)
 # Screen dimensions
 WIDTH, HEIGHT = 1320, 680
 game_screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Swamp of Souls - Fase 02")
+pygame.display.set_caption("Swamp of Souls")
 
 # Player sprite
 moving_sprites = pygame.sprite.Group()
@@ -176,11 +176,11 @@ class LevelFourScreen:
             game_screen.blit(shadow_text, (x_position + shadow_offset, (HEIGHT / 2) - 50 + shadow_offset))
             game_screen.blit(letter_surface, (x_position, HEIGHT // 2 - 50))
 
-        plank_text = small_font.render(f'Crossed planks: {self.crossed_planks}', True, WHITE)
+        plank_text = small_font.render(f'Tábuas atravessadas: {self.crossed_planks}', True, WHITE)
         game_screen.blit(plank_text, (180, 30))
-        error_text = small_font.render(f'Errors: {self.errors}/{self.max_errors}', True, BROWN)
+        error_text = small_font.render(f'Erros: {self.errors}/{self.max_errors}', True, BROWN)
         game_screen.blit(error_text, (180, 60))
-        stability_text = small_font.render(f'Stability: {self.bridge_stability}%', True, WHITE)
+        stability_text = small_font.render(f'Estabilidade da ponte: {self.bridge_stability}%', True, WHITE)
         game_screen.blit(stability_text, (180, 90))
 
         if len(self.letter_row) > 0:
@@ -268,6 +268,9 @@ class LevelFourScreen:
                 player.animate()
             else:
                 player.stopAnimating()
+
+            time_bar_width = int(100 * max(0, (self.time_limit - elapsed_time) / self.time_limit))
+            pygame.draw.rect(game_screen, GRAY, (10, HEIGHT - 90, time_bar_width, 20))
 
             if self.player_position[0] > WIDTH:  # If the player has already left the screen
                 running = False  # End the game
